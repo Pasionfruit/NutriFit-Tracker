@@ -1,4 +1,4 @@
-package com.zybooks.nutrifittracker.ui.home;
+package com.zybooks.nutrifittracker.ui.macros;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,18 +10,18 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.zybooks.nutrifittracker.databinding.FragmentHomeBinding;
+import com.zybooks.nutrifittracker.databinding.FragmentMacrosBinding;
 
-public class HomeFragment extends Fragment {
+public class MacrosFragment extends Fragment {
 
-    private FragmentHomeBinding binding;
+    private FragmentMacrosBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        HomeViewModel homeViewModel =
-                new ViewModelProvider(this).get(HomeViewModel.class);
+        MacrosViewModel homeViewModel =
+                new ViewModelProvider(this).get(MacrosViewModel.class);
 
-        binding = FragmentHomeBinding.inflate(inflater, container, false);
+        binding = FragmentMacrosBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         final TextView textView = binding.textHome;
