@@ -6,20 +6,20 @@
     app:startDestination="@+id/navigation_macros">
 
     <fragment
-        android:id="@+id/navigation_macros"
+        android:id="@id/navigation_macros"
         android:name="com.zybooks.nutrifittracker.ui.macros.MacrosFragment"
-        android:label="@string/title_home"
+        android:label="@string/title_macros"
         tools:layout="@layout/fragment_macros" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.zybooks.nutrifittracker.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        android:id="@id/navigation_workout"
+        android:name="com.zybooks.nutrifittracker.ui.workout.WorkoutFragment"
+        android:label="@string/title_workout"
+        tools:layout="@layout/fragment_workout" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
+        android:id="@id/navigation_notifications"
         android:name="com.zybooks.nutrifittracker.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
+        android:label="@string/title_diary"
         tools:layout="@layout/fragment_notifications" />
 </navigation>

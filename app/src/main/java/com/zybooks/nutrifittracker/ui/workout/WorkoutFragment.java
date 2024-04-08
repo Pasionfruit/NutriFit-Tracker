@@ -1,4 +1,4 @@
-package com.zybooks.nutrifittracker.ui.dashboard;
+package com.zybooks.nutrifittracker.ui.workout;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,22 +10,22 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.zybooks.nutrifittracker.databinding.FragmentDashboardBinding;
+import com.zybooks.nutrifittracker.databinding.FragmentWorkoutBinding;
 
-public class DashboardFragment extends Fragment {
+public class WorkoutFragment extends Fragment {
 
-    private FragmentDashboardBinding binding;
+    private FragmentWorkoutBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        DashboardViewModel dashboardViewModel =
-                new ViewModelProvider(this).get(DashboardViewModel.class);
+        WorkoutViewModel workoutViewModel =
+                new ViewModelProvider(this).get(WorkoutViewModel.class);
 
-        binding = FragmentDashboardBinding.inflate(inflater, container, false);
+        binding = FragmentWorkoutBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         final TextView textView = binding.textDashboard;
-        dashboardViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        workoutViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 
