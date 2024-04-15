@@ -13,12 +13,12 @@
     <string name="no_exercises">No exercises exist for this workout.</string>
     <string name="add_exercise">Add Exercise</string>
     <string name="repetition_label">R</string>
-    <string name="hide_answer">Hide Answer</string>
-    <string name="set_label">S</string>
+    <string name="set_completed">Set Completed</string>
+    <string name="weight_label">W</string>
 
 <!--    activity_question_edit-->
     <string name="repetition_hint">Repetition</string>
-    <string name="set_hint">Set</string>
+    <string name="weight_hint">Weight</string>
     <string name="save_exercise">Save Exercise</string>
 
 <!--    activity_subject-->

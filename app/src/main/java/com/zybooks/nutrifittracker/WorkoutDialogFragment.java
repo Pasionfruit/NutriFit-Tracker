@@ -13,26 +13,26 @@ import androidx.fragment.app.DialogFragment;
 
 public class WorkoutDialogFragment extends DialogFragment {
 
-    public interface OnWorkoutEnteredListener {
-        void onWorkoutEntered(String workoutText);
+    public interface OnSubjectEnteredListener {
+        void onSubjectEntered(String subjectText);
     }
 
-    private OnWorkoutEnteredListener mListener;
+    private OnSubjectEnteredListener mListener;
 
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        final EditText workoutEditText = new EditText(requireActivity());
-        workoutEditText.setInputType(InputType.TYPE_CLASS_TEXT);
-        workoutEditText.setMaxLines(1);
+        final EditText subjectEditText = new EditText(requireActivity());
+        subjectEditText.setInputType(InputType.TYPE_CLASS_TEXT);
+        subjectEditText.setMaxLines(1);
 
         return new AlertDialog.Builder(requireActivity())
                 .setTitle(R.string.workout)
-                .setView(workoutEditText)
+                .setView(subjectEditText)
                 .setPositiveButton(R.string.create, (dialog, whichButton) -> {
                     // Notify listener
-                    String workout = workoutEditText.getText().toString();
-                    mListener.onWorkoutEntered(workout.trim());
+                    String subject = subjectEditText.getText().toString();
+                    mListener.onSubjectEntered(subject.trim());
                 })
                 .setNegativeButton(R.string.cancel, null)
                 .create();
@@ -41,11 +41,7 @@ public class WorkoutDialogFragment extends DialogFragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        try {
-            mListener = (OnWorkoutEnteredListener) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() + " must implement OnWorkoutEnteredListener");
-        }
+        mListener = (OnSubjectEnteredListener) context;
     }
 
     @Override

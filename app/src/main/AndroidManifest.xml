@@ -24,24 +24,24 @@
 <!--        </activity>-->
         <activity
             android:name=".ImportActivity"
-            android:parentActivityName=".SubjectActivity"
+            android:parentActivityName=".WorkoutActivity"
             android:exported="false" />
         <activity
             android:name=".SettingsActivity"
             android:exported="false"
             android:label="@string/settings"
-            android:parentActivityName=".SubjectActivity" />
+            android:parentActivityName=".WorkoutActivity" />
         <activity
-            android:name=".QuestionEditActivity"
+            android:name=".ExerciseEditActivity"
             android:exported="false"
-            android:parentActivityName=".QuestionActivity" />
+            android:parentActivityName=".ExerciseActivity" />
         <activity
-            android:name=".QuestionActivity"
+            android:name=".ExerciseActivity"
             android:exported="false"
             android:launchMode="singleTop"
-            android:parentActivityName=".SubjectActivity" />
+            android:parentActivityName=".WorkoutActivity" />
         <activity
-            android:name=".SubjectActivity"
+            android:name=".WorkoutActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -27,8 +27,8 @@ import com.zybooks.nutrifittracker.viewmodel.SubjectListViewModel;
 import java.util.Comparator;
 import java.util.List;
 
-public class SubjectActivity extends AppCompatActivity
-        implements SubjectDialogFragment.OnSubjectEnteredListener {
+public class WorkoutActivity extends AppCompatActivity
+        implements WorkoutDialogFragment.OnSubjectEnteredListener {
     public enum SubjectSortOrder {
         ALPHABETIC, NEW_FIRST, OLD_FIRST
     }
@@ -101,7 +101,7 @@ public class SubjectActivity extends AppCompatActivity
     }
 
     private void addSubjectClick() {
-        SubjectDialogFragment dialog = new SubjectDialogFragment();
+        WorkoutDialogFragment dialog = new WorkoutDialogFragment();
         dialog.show(getSupportFragmentManager(), "subjectDialog");
     }
 
@@ -136,9 +136,9 @@ public class SubjectActivity extends AppCompatActivity
         @Override
         public void onClick(View view) {
             // Start QuestionActivity with the selected subject
-            Intent intent = new Intent(SubjectActivity.this, QuestionActivity.class);
-            intent.putExtra(QuestionActivity.EXTRA_SUBJECT_ID, mSubject.getId());
-            intent.putExtra(QuestionActivity.EXTRA_SUBJECT_TEXT, mSubject.getText());
+            Intent intent = new Intent(WorkoutActivity.this, ExerciseActivity.class);
+            intent.putExtra(ExerciseActivity.EXTRA_SUBJECT_ID, mSubject.getId());
+            intent.putExtra(ExerciseActivity.EXTRA_SUBJECT_TEXT, mSubject.getText());
 
             startActivity(intent);
         }
@@ -156,7 +156,7 @@ public class SubjectActivity extends AppCompatActivity
             mSubjectAdapter.notifyItemChanged(mSelectedSubjectPosition);
 
             // Show the CAB
-            mActionMode = SubjectActivity.this.startActionMode(mActionModeCallback);
+            mActionMode = WorkoutActivity.this.startActionMode(mActionModeCallback);
 
             return true;
         }

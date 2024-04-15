@@ -25,7 +25,7 @@ import com.zybooks.nutrifittracker.viewmodel.QuestionListViewModel;
 
 import java.util.List;
 
-public class QuestionActivity extends AppCompatActivity {
+public class ExerciseActivity extends AppCompatActivity {
 
     public static final String EXTRA_SUBJECT_ID = "com.zybooks.studyhelper.subject_id";
     public static final String EXTRA_SUBJECT_TEXT  = "com.zybooks.studyhelper.subject_text";
@@ -145,13 +145,13 @@ public class QuestionActivity extends AppCompatActivity {
 
                     // Display the added question, which will appear at end of list
                     mCurrentQuestionIndex = mQuestionList.size();
-                    Toast.makeText(QuestionActivity.this, R.string.question_added, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ExerciseActivity.this, R.string.question_added, Toast.LENGTH_SHORT).show();
                 }
             });
 
     private void addQuestion() {
-        Intent intent = new Intent(this, QuestionEditActivity.class);
-        intent.putExtra(QuestionEditActivity.EXTRA_SUBJECT_ID, mSubject.getId());
+        Intent intent = new Intent(this, ExerciseEditActivity.class);
+        intent.putExtra(ExerciseEditActivity.EXTRA_SUBJECT_ID, mSubject.getId());
         mAddQuestionResultLauncher.launch(intent);
     }
 
@@ -159,15 +159,15 @@ public class QuestionActivity extends AppCompatActivity {
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 if (result.getResultCode() == Activity.RESULT_OK) {
-                    Toast.makeText(QuestionActivity.this, R.string.question_updated, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ExerciseActivity.this, R.string.question_updated, Toast.LENGTH_SHORT).show();
                 }
             });
 
     private void editQuestion() {
         if (mCurrentQuestionIndex >= 0) {
-            Intent intent = new Intent(this, QuestionEditActivity.class);
+            Intent intent = new Intent(this, ExerciseEditActivity.class);
             long questionId = mQuestionList.get(mCurrentQuestionIndex).getId();
-            intent.putExtra(QuestionEditActivity.EXTRA_QUESTION_ID, questionId);
+            intent.putExtra(ExerciseEditActivity.EXTRA_QUESTION_ID, questionId);
             mEditQuestionResultLauncher.launch(intent);
         }
     }

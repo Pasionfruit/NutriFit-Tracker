@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.zybooks.nutrifittracker.model.Question;
 import com.zybooks.nutrifittracker.viewmodel.QuestionDetailViewModel;
 
-public class QuestionEditActivity extends AppCompatActivity {
+public class ExerciseEditActivity extends AppCompatActivity {
 
     public static final String EXTRA_QUESTION_ID = "com.zybooks.nutrifittracker.question_id";
     public static final String EXTRA_SUBJECT_ID = "com.zybooks.nutrifittracker.subject_id";
