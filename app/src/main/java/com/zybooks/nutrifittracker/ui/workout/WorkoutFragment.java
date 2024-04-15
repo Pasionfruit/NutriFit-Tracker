@@ -24,8 +24,6 @@ public class WorkoutFragment extends Fragment {
         binding = FragmentWorkoutBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textDashboard;
-        workoutViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 
