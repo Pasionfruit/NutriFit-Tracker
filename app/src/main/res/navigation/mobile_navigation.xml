@@ -12,12 +12,6 @@
         tools:layout="@layout/fragment_macros" />
 
     <fragment
-        android:id="@id/navigation_workout"
-        android:name="com.zybooks.nutrifittracker.ui.workout.WorkoutFragment"
-        android:label="@string/title_workout"
-        tools:layout="@layout/fragment_workout" />
-
-    <fragment
         android:id="@id/navigation_diary"
         android:name="com.zybooks.nutrifittracker.ui.diary.DiaryFragment"
         android:label="@string/title_diary"

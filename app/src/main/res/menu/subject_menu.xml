@@ -4,7 +4,7 @@
 
     <item android:id="@+id/import_questions"
         android:icon="@drawable/import_questions"
-        android:title="@string/import_questions"
+        android:title="@string/import_exercises"
         app:showAsAction="ifRoom"/>
 
     <item android:id="@+id/settings"

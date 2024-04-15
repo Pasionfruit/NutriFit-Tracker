@@ -49,4 +49,8 @@ public class Workout {
     public void setUpdateTime(long updateTime) {
         mUpdateTime = updateTime;
     }
+
+    public short getName() {
+        return 0;
+    }
 }

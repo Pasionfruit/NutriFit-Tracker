@@ -42,7 +42,7 @@ public class QuestionEditActivity extends AppCompatActivity {
             mQuestion = new Question();
             mQuestion.setSubjectId(intent.getLongExtra(EXTRA_SUBJECT_ID, 0));
 
-            setTitle(R.string.add_question);
+            setTitle(R.string.add_exercise);
         }
         else {
             // Display existing question from ViewModel

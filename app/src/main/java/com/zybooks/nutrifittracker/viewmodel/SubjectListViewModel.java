@@ -5,8 +5,8 @@ import android.app.Application;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import com.zybooks.nutrifittracker.model.Subject;
 import com.zybooks.nutrifittracker.repo.StudyRepository;
+import com.zybooks.nutrifittracker.model.Subject;
 
 import java.util.List;
 

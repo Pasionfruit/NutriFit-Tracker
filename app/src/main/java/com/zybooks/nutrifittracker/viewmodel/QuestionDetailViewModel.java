@@ -8,8 +8,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 
-import com.zybooks.nutrifittracker.model.Question;
 import com.zybooks.nutrifittracker.repo.StudyRepository;
+import com.zybooks.nutrifittracker.model.Question;
 
 public class QuestionDetailViewModel extends AndroidViewModel {
 
