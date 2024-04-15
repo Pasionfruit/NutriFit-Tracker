@@ -44,7 +44,7 @@ public class ExerciseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_question);
+        setContentView(R.layout.activity_exercise);
 
         mQuestionTextView = findViewById(R.id.question_text_view);
         mAnswerLabelTextView = findViewById(R.id.answer_label_text_view);
@@ -220,7 +220,7 @@ public class ExerciseActivity extends AppCompatActivity {
             mAnswerLabelTextView.setVisibility(View.INVISIBLE);
         }
         else {
-            mAnswerButton.setText(R.string.hide_answer);
+            mAnswerButton.setText(R.string.set_completed);
             mAnswerTextView.setVisibility(View.VISIBLE);
             mAnswerLabelTextView.setVisibility(View.VISIBLE);
         }
