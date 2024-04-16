@@ -6,17 +6,86 @@
     android:layout_height="match_parent"
     tools:context=".ui.macros.MacrosFragment">
 
+    <!-- Header      nutrifit                      -->
     <TextView
-        android:id="@+id/text_home"
-        android:layout_width="match_parent"
+        android:id="@+id/text_macros"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:text="Macros"
         android:textAlignment="center"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp" />
+
+    <!-- Meal Name -->
+    <EditText
+        android:id="@+id/meal_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Enter Meal Name"
+        app:layout_constraintTop_toBottomOf="@id/text_macros"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp" />
+
+    <!-- Meal Type -->
+    <!-- breakfast, lunch, dinner and maybe snack option, this spinner needs adapter-->
+    <Spinner
+        android:id="@+id/meal_type_spinner"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/meal_name"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp" />
+
+    
+    
+    
+    <!-- Calories -->
+    <EditText
+        android:id="@+id/calories"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Calories"
+        app:layout_constraintTop_toBottomOf="@id/meal_type_spinner"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp" />
+
+    <!-- Carbs -->
+    <EditText
+        android:id="@+id/carbs"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Carbs"
+        app:layout_constraintTop_toBottomOf="@id/calories"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp" />
+
+    <!-- Fats -->
+    <EditText
+        android:id="@+id/fats"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Fats"
+        app:layout_constraintTop_toBottomOf="@id/carbs"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp" />
+
+    <!-- Protein -->
+    <EditText
+        android:id="@+id/protein"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Protein"
+        app:layout_constraintTop_toBottomOf="@id/fats"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
