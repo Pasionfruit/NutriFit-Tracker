@@ -21,13 +21,10 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.zybooks.nutrifittracker.R;
-
-
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.zybooks.nutrifittracker.model.Subject;
 import com.zybooks.nutrifittracker.ui.diary.DiaryFragment;
 import com.zybooks.nutrifittracker.ui.macros.MacrosFragment;
-import com.zybooks.nutrifittracker.model.Subject;
 import com.zybooks.nutrifittracker.viewmodel.SubjectListViewModel;
 
 import java.util.Comparator;
@@ -35,6 +32,7 @@ import java.util.List;
 
 public class WorkoutActivity extends AppCompatActivity
         implements WorkoutDialogFragment.OnSubjectEnteredListener {
+
     public enum SubjectSortOrder {
         ALPHABETIC, NEW_FIRST, OLD_FIRST
     }
@@ -60,7 +58,7 @@ public class WorkoutActivity extends AppCompatActivity
         // Create 2 grid layout columns
         mRecyclerView = findViewById(R.id.subject_recycler_view);
         RecyclerView.LayoutManager gridLayoutManager =
-                new GridLayoutManager(getApplicationContext(), 2);
+                new GridLayoutManager(getApplicationContext(), 1);
         mRecyclerView.setLayoutManager(gridLayoutManager);
 
         // Call updateUI() when the subject list changes
@@ -72,6 +70,7 @@ public class WorkoutActivity extends AppCompatActivity
 
         // Initialize the BottomNavigationView
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav_view);
+        bottomNavigationView.setSelectedItemId(R.id.navigation_workout);
 
         // Set up the navigation item selected listener
         bottomNavigationView.setOnNavigationItemSelectedListener(navListener);
@@ -82,16 +81,16 @@ public class WorkoutActivity extends AppCompatActivity
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                     Fragment selectedFragment = null;
-                    switch (item.getItemId()) {
-                        case 1:
-                            selectedFragment = new MacrosFragment();
-                            break;
-                        case 2:
-                            // Handle workout navigation
-                            break;
-                        case 3:
-                            selectedFragment = new DiaryFragment();
-                            break;
+                    int itemId = item.getItemId(); // Get the ID of the selected item
+
+                    // Use if-else statements instead of switch
+                    if (itemId == R.id.navigation_macros) {
+                        selectedFragment = new MacrosFragment();
+                    } else if (itemId == R.id.navigation_workout) {
+                        // Already in the WorkoutActivity, no need to navigate
+                        return true;
+                    } else if (itemId == R.id.navigation_diary) {
+                        selectedFragment = new DiaryFragment();
                     }
 
                     if (selectedFragment != null) {
@@ -104,20 +103,26 @@ public class WorkoutActivity extends AppCompatActivity
                 }
             };
 
-
     private SubjectSortOrder getSettingsSortOrder() {
-
         // Set sort order from settings
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         String sortOrderPref = sharedPrefs.getString("subject_order", "alpha");
         switch (sortOrderPref) {
-            case "alpha": return SubjectSortOrder.ALPHABETIC;
-            case "new_first": return SubjectSortOrder.NEW_FIRST;
-            default: return SubjectSortOrder.OLD_FIRST;
+            case "alpha":
+                return SubjectSortOrder.ALPHABETIC;
+            case "new_first":
+                return SubjectSortOrder.NEW_FIRST;
+            default:
+                return SubjectSortOrder.OLD_FIRST;
         }
     }
+
     private void updateUI(List<Subject> subjectList) {
-        mSubjectAdapter = new SubjectAdapter(subjectList);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav_view);
+        int selectedItemId = bottomNavigationView.getSelectedItemId();
+        boolean isWorkoutSelected = selectedItemId == R.id.navigation_workout;
+
+        mSubjectAdapter = new SubjectAdapter(subjectList, isWorkoutSelected);
         mSubjectAdapter.setSortOrder(getSettingsSortOrder());
         mRecyclerView.setAdapter(mSubjectAdapter);
     }
@@ -137,6 +142,7 @@ public class WorkoutActivity extends AppCompatActivity
             implements View.OnClickListener, View.OnLongClickListener {
         private Subject mSubject;
         private final TextView mSubjectTextView;
+
         public SubjectHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.recycler_view_items, parent, false));
             itemView.setOnClickListener(this);
@@ -144,23 +150,28 @@ public class WorkoutActivity extends AppCompatActivity
             itemView.setOnLongClickListener(this);
         }
 
-        public void bind(Subject subject, int position) {
+        public void bind(Subject subject, int position, boolean isWorkoutSelected) {
             mSubject = subject;
             mSubjectTextView.setText(subject.getText());
-            if (mSelectedSubjectPosition == position) {
-                // Make selected subject stand out
-                mSubjectTextView.setBackgroundColor(Color.RED);
-            }
-            else {
-                // Make the background color dependent on the length of the subject string
-                int colorIndex = subject.getText().length() % mSubjectColors.length;
-                mSubjectTextView.setBackgroundColor(mSubjectColors[colorIndex]);
+
+            if (isWorkoutSelected) {
+                if (mSelectedSubjectPosition == position) {
+                    // Make selected subject stand out
+                    mSubjectTextView.setBackgroundColor(Color.RED);
+                } else {
+                    // Make the background color dependent on the length of the subject string
+                    int colorIndex = subject.getText().length() % mSubjectColors.length;
+                    mSubjectTextView.setBackgroundColor(mSubjectColors[colorIndex]);
+                }
+            } else {
+                // If navigation_workout is not selected, make the background empty
+                mSubjectTextView.setBackgroundColor(Color.TRANSPARENT);
             }
         }
 
         @Override
         public void onClick(View view) {
-            // Start QuestionActivity with the selected subject
+            // Start ExerciseActivity with the selected subject
             Intent intent = new Intent(WorkoutActivity.this, ExerciseActivity.class);
             intent.putExtra(ExerciseActivity.EXTRA_SUBJECT_ID, mSubject.getId());
             intent.putExtra(ExerciseActivity.EXTRA_SUBJECT_TEXT, mSubject.getText());
@@ -215,8 +226,11 @@ public class WorkoutActivity extends AppCompatActivity
 
     private class SubjectAdapter extends RecyclerView.Adapter<SubjectHolder> {
         private final List<Subject> mSubjectList;
-        public SubjectAdapter(List<Subject> subjects) {
+        private final boolean mIsWorkoutSelected;
+
+        public SubjectAdapter(List<Subject> subjects, boolean isWorkoutSelected) {
             mSubjectList = subjects;
+            mIsWorkoutSelected = isWorkoutSelected;
         }
 
         @NonNull
@@ -227,14 +241,15 @@ public class WorkoutActivity extends AppCompatActivity
         }
 
         @Override
-        public void onBindViewHolder(SubjectHolder holder, int position){
-            holder.bind(mSubjectList.get(position), position);
+        public void onBindViewHolder(SubjectHolder holder, int position) {
+            holder.bind(mSubjectList.get(position), position, mIsWorkoutSelected);
         }
 
         @Override
         public int getItemCount() {
             return mSubjectList.size();
         }
+
         public void addSubject(Subject subject) {
             mSubjectList.add(0, subject);
             notifyItemInserted(0);
@@ -276,8 +291,7 @@ public class WorkoutActivity extends AppCompatActivity
             Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
             return true;
-        }
-        else if (item.getItemId() == R.id.import_questions) {
+        } else if (item.getItemId() == R.id.import_questions) {
             WorkoutDialogFragment dialog = new WorkoutDialogFragment();
             dialog.show(getSupportFragmentManager(), "subjectDialog");
             return true;

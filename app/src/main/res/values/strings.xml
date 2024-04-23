@@ -43,11 +43,11 @@
 
     <string name="show_answer">Show Answer</string>
     <string name="update">Update</string>
-    <string name="question_deleted">Question deleted.</string>
-    <string name="question_added">Question added.</string>
-    <string name="question_updated">Question updated.</string>
+    <string name="question_deleted">Exercise deleted.</string>
+    <string name="question_added">Exercise added.</string>
+    <string name="question_updated">Exercise updated.</string>
     <string name="create">Create</string>
-    <string name="subject">New subject?</string>
+    <string name="subject">New workout?</string>
     <string name="cancel">Cancel</string>
     <string name="edit_question">Edit Question</string>
     <string name="subject_exists">The subject "%1$s" already exists.</string>

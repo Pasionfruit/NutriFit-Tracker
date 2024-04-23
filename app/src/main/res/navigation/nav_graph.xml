@@ -2,18 +2,25 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_macros">
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/navigation_workout">
 
     <fragment
-        android:id="@id/navigation_macros"
+        android:id="@+id/navigation_workout"
+        android:name="com.zybooks.nutrifittracker.WorkoutDialogFragment"
+        android:label="Workout Fragment"
+        tools:layout="@layout/activity_workout" />
+
+    <fragment
+        android:id="@+id/navigation_macros"
         android:name="com.zybooks.nutrifittracker.ui.macros.MacrosActivity"
-        android:label="@string/title_macros"
+        android:label="Macros Fragment"
         tools:layout="@layout/activity_macros" />
 
     <fragment
-        android:id="@id/navigation_diary"
+        android:id="@+id/navigation_diary"
         android:name="com.zybooks.nutrifittracker.ui.diary.DiaryFragment"
-        android:label="@string/title_diary"
+        android:label="Diary Fragment"
         tools:layout="@layout/activity_diary" />
+
 </navigation>
