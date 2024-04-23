@@ -1,60 +1,83 @@
-<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="10dp"
+    android:padding="8dp"
     tools:context="com.zybooks.nutrifittracker.ExerciseEditActivity">
 
     <TextView
-        android:id="@+id/question_label_text_view"
+        android:id="@+id/exercise_name_label_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/repetition_label"
-        android:labelFor="@id/question_edit_text"
+        android:text="@string/exercise_name"
         style="@style/QALabel"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent" />
 
     <EditText
+        android:id="@+id/exercise_name_edit_text"
+        style="@style/QAEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/exercise_hint"
+        android:importantForAutofill="no"
+        android:inputType="text"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/exercise_name_label_text_view"
+        android:layout_marginTop="4dp" />
+
+    <TextView
+        android:id="@+id/question_label_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/repetition_name"
+        style="@style/QALabel"
+        app:layout_constraintTop_toBottomOf="@id/exercise_name_edit_text"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="8dp"/>
+
+    <EditText
         android:id="@+id/question_edit_text"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:hint="@string/repetition_hint"
         android:importantForAutofill="no"
         android:inputType="textMultiLine"
         android:maxLines="5"
         style="@style/QAEditText"
-        app:layout_constraintTop_toTopOf="@id/question_label_text_view"
-        app:layout_constraintBottom_toTopOf="@id/answer_edit_text"
-        app:layout_constraintLeft_toRightOf="@id/question_label_text_view"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/question_label_text_view"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="4dp" />
 
     <TextView
         android:id="@+id/answer_label_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/weight_label"
-        android:labelFor="@id/answer_edit_text"
+        android:text="@string/weight_name"
         style="@style/QALabel"
-        app:layout_constraintTop_toTopOf="@id/answer_edit_text"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/question_edit_text"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="8dp"/>
 
     <EditText
         android:id="@+id/answer_edit_text"
+        style="@style/QAEditText"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:hint="@string/weight_hint"
         android:importantForAutofill="no"
         android:inputType="textMultiLine"
-        android:maxLines="5"
-        style="@style/QAEditText"
-        app:layout_constraintTop_toBottomOf="@id/question_edit_text"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toRightOf="@id/answer_label_text_view"
-        app:layout_constraintRight_toRightOf="parent" />
+        android:maxLines="1"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/answer_label_text_view"
+        android:layout_marginTop="4dp" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/save_button"
@@ -62,7 +85,7 @@
         android:layout_height="wrap_content"
         android:src="@drawable/check"
         android:contentDescription="@string/save_exercise"
-        android:layout_margin="10dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 

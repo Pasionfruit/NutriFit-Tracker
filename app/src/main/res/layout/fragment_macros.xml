@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.macros.MacrosFragment">
 
-    <!-- Header      nutrifit                      -->
+    <!-- Header -->
     <TextView
         android:id="@+id/text_macros"
         android:layout_width="0dp"
@@ -31,7 +32,6 @@
         android:layout_marginTop="16dp" />
 
     <!-- Meal Type -->
-    <!-- breakfast, lunch, dinner and maybe snack option, this spinner needs adapter-->
     <Spinner
         android:id="@+id/meal_type_spinner"
         android:layout_width="0dp"
@@ -41,9 +41,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="8dp" />
 
-    
-    
-    
     <!-- Calories -->
     <EditText
         android:id="@+id/calories"
@@ -87,5 +84,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="8dp" />
+
+    <!-- Bottom Navigation -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_nav_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        app:menu="@menu/bottom_nav_menu"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

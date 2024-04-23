@@ -20,14 +20,6 @@
     <color name="gray_700">#555</color>
 
     <array name="subjectColors">
-        <item>#1A237E</item>
-        <item>#880E4F</item>
-        <item>#006064</item>
-        <item>#F57F17</item>
-        <item>#BF360C</item>
-        <item>#01579B</item>
-        <item>#33691E</item>
-        <item>#4A148C</item>
-        <item>#B71C1C</item>
+        <item>#7E7D7D</item>
     </array>
 </resources>

@@ -36,6 +36,13 @@
         android:orientation="vertical"
         tools:context="com.zybooks.studyhelper.QuestionActivity">
 
+        <TextView
+            android:id="@+id/exercise_name_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/exercise_name"
+            android:textSize="30sp" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -46,43 +53,42 @@
                 android:id="@+id/question_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/repetition_hint"
+                android:text="@string/repetition_name"
                 android:textSize="30sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=" x "
+                android:text=" X "
                 android:textSize="30sp" />
 
             <TextView
                 android:id="@+id/answer_text_view"
-                android:layout_width="wrap_content"
+                android:layout_width="129dp"
                 android:layout_height="wrap_content"
                 android:text="Weight"
                 android:textSize="30sp" />
-        </LinearLayout>
 
+        </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <Button
                 android:id="@+id/seconds_30_button"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="30s Timer"
-                android:layout_marginRight="10dp"/>
+                android:layout_marginBottom="10dp"
+                android:text="30s Timer" />
 
             <Button
                 android:id="@+id/seconds_60_button"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="60s Timer"
-                android:layout_marginLeft="10dp"/>
+                android:layout_marginTop="10dp"
+                android:text="60s Timer" />
+
         </LinearLayout>
 
         <Button
