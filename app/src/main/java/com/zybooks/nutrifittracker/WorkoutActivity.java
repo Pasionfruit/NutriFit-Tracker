@@ -16,11 +16,17 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.zybooks.nutrifittracker.R;
 
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.zybooks.nutrifittracker.ui.diary.DiaryFragment;
+import com.zybooks.nutrifittracker.ui.macros.MacrosFragment;
 import com.zybooks.nutrifittracker.model.Subject;
 import com.zybooks.nutrifittracker.viewmodel.SubjectListViewModel;
 
@@ -32,6 +38,7 @@ public class WorkoutActivity extends AppCompatActivity
     public enum SubjectSortOrder {
         ALPHABETIC, NEW_FIRST, OLD_FIRST
     }
+
     private Boolean mLoadSubjectList = true;
     private SubjectAdapter mSubjectAdapter;
     private RecyclerView mRecyclerView;
@@ -44,13 +51,11 @@ public class WorkoutActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_subject);
+        setContentView(R.layout.activity_workout);
 
         mSubjectListViewModel = new ViewModelProvider(this).get(SubjectListViewModel.class);
 
         mSubjectColors = getResources().getIntArray(R.array.subjectColors);
-
-        findViewById(R.id.add_subject_button).setOnClickListener(view -> addSubjectClick());
 
         // Create 2 grid layout columns
         mRecyclerView = findViewById(R.id.subject_recycler_view);
@@ -64,7 +69,41 @@ public class WorkoutActivity extends AppCompatActivity
                 updateUI(subjects);
             }
         });
+
+        // Initialize the BottomNavigationView
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav_view);
+
+        // Set up the navigation item selected listener
+        bottomNavigationView.setOnNavigationItemSelectedListener(navListener);
     }
+
+    private final BottomNavigationView.OnNavigationItemSelectedListener navListener =
+            new BottomNavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                    Fragment selectedFragment = null;
+                    switch (item.getItemId()) {
+                        case 1:
+                            selectedFragment = new MacrosFragment();
+                            break;
+                        case 2:
+                            // Handle workout navigation
+                            break;
+                        case 3:
+                            selectedFragment = new DiaryFragment();
+                            break;
+                    }
+
+                    if (selectedFragment != null) {
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.fragment_container, selectedFragment)
+                                .commit();
+                    }
+
+                    return true;
+                }
+            };
+
 
     private SubjectSortOrder getSettingsSortOrder() {
 
@@ -87,30 +126,17 @@ public class WorkoutActivity extends AppCompatActivity
     public void onSubjectEntered(String subjectText) {
         if (subjectText.length() > 0) {
             Subject subject = new Subject(subjectText);
-
-            // Stop updateUI() from being called
             mLoadSubjectList = false;
-
             mSubjectListViewModel.addSubject(subject);
-
-            // Add subject to RecyclerView
             mSubjectAdapter.addSubject(subject);
-
             Toast.makeText(this, "Added " + subjectText, Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void addSubjectClick() {
-        WorkoutDialogFragment dialog = new WorkoutDialogFragment();
-        dialog.show(getSupportFragmentManager(), "subjectDialog");
-    }
-
     private class SubjectHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener, View.OnLongClickListener {
-
         private Subject mSubject;
         private final TextView mSubjectTextView;
-
         public SubjectHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.recycler_view_items, parent, false));
             itemView.setOnClickListener(this);
@@ -121,7 +147,6 @@ public class WorkoutActivity extends AppCompatActivity
         public void bind(Subject subject, int position) {
             mSubject = subject;
             mSubjectTextView.setText(subject.getText());
-
             if (mSelectedSubjectPosition == position) {
                 // Make selected subject stand out
                 mSubjectTextView.setBackgroundColor(Color.RED);
@@ -139,7 +164,6 @@ public class WorkoutActivity extends AppCompatActivity
             Intent intent = new Intent(WorkoutActivity.this, ExerciseActivity.class);
             intent.putExtra(ExerciseActivity.EXTRA_SUBJECT_ID, mSubject.getId());
             intent.putExtra(ExerciseActivity.EXTRA_SUBJECT_TEXT, mSubject.getText());
-
             startActivity(intent);
         }
 
@@ -148,16 +172,9 @@ public class WorkoutActivity extends AppCompatActivity
             if (mActionMode != null) {
                 return false;
             }
-
             mSelectedSubject = mSubject;
-//            mSelectedSubjectPosition = getAbsoluteAdapterPosition();
-
-            // Re-bind the selected item
             mSubjectAdapter.notifyItemChanged(mSelectedSubjectPosition);
-
-            // Show the CAB
             mActionMode = WorkoutActivity.this.startActionMode(mActionModeCallback);
-
             return true;
         }
     }
@@ -166,7 +183,6 @@ public class WorkoutActivity extends AppCompatActivity
 
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-            // Provide context menu for CAB
             MenuInflater inflater = mode.getMenuInflater();
             inflater.inflate(R.menu.context_menu, menu);
             return true;
@@ -179,39 +195,26 @@ public class WorkoutActivity extends AppCompatActivity
 
         @Override
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-            // Process action item selection
             if (item.getItemId() == R.id.delete) {
-                // Stop updateUI() from being called
                 mLoadSubjectList = false;
-
-                // Delete from ViewModel
                 mSubjectListViewModel.deleteSubject(mSelectedSubject);
-
-                // Remove from RecyclerView
                 mSubjectAdapter.removeSubject(mSelectedSubject);
-
-                // Close the CAB
                 mode.finish();
                 return true;
             }
-
             return false;
         }
 
         @Override
         public void onDestroyActionMode(ActionMode mode) {
             mActionMode = null;
-
-            // CAB closing, need to deselect item if not deleted
             mSubjectAdapter.notifyItemChanged(mSelectedSubjectPosition);
             mSelectedSubjectPosition = RecyclerView.NO_POSITION;
         }
     };
 
     private class SubjectAdapter extends RecyclerView.Adapter<SubjectHolder> {
-
         private final List<Subject> mSubjectList;
-
         public SubjectAdapter(List<Subject> subjects) {
             mSubjectList = subjects;
         }
@@ -232,29 +235,16 @@ public class WorkoutActivity extends AppCompatActivity
         public int getItemCount() {
             return mSubjectList.size();
         }
-
         public void addSubject(Subject subject) {
-
-            // Add the new subject at the beginning of the list
             mSubjectList.add(0, subject);
-
-            // Notify the adapter that item was added to the beginning of the list
             notifyItemInserted(0);
-
-            // Scroll to the top
             mRecyclerView.scrollToPosition(0);
         }
 
         public void removeSubject(Subject subject) {
-
-            // Find subject in the list
             int index = mSubjectList.indexOf(subject);
             if (index >= 0) {
-
-                // Remove the subject
                 mSubjectList.remove(index);
-
-                // Notify adapter of subject removal
                 notifyItemRemoved(index);
             }
         }
@@ -276,21 +266,20 @@ public class WorkoutActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.subject_menu, menu);
+        inflater.inflate(R.menu.workout_menu, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
         if (item.getItemId() == R.id.settings) {
             Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
             return true;
         }
         else if (item.getItemId() == R.id.import_questions) {
-            Intent intent = new Intent(this, ImportActivity.class);
-            startActivity(intent);
+            WorkoutDialogFragment dialog = new WorkoutDialogFragment();
+            dialog.show(getSupportFragmentManager(), "subjectDialog");
             return true;
         }
 

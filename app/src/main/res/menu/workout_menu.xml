@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item android:id="@+id/import_questions"
-        android:icon="@drawable/import_questions"
-        android:title="@string/import_exercises"
+        android:icon="@drawable/add"
+        android:title="@string/add_workout"
         app:showAsAction="ifRoom"/>
 
     <item android:id="@+id/settings"

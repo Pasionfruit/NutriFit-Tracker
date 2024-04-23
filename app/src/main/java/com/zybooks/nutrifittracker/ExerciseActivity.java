@@ -88,7 +88,7 @@ public class ExerciseActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.question_menu, menu);
+        inflater.inflate(R.menu.exercise_menu, menu);
         return true;
     }
 
