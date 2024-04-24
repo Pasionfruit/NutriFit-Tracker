@@ -16,14 +16,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.zybooks.nutrifittracker.model.Subject;
-import com.zybooks.nutrifittracker.ui.macros.MacrosFragment;
 import com.zybooks.nutrifittracker.viewmodel.SubjectListViewModel;
 
 import java.util.Comparator;
