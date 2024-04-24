@@ -23,7 +23,6 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.zybooks.nutrifittracker.model.Subject;
-import com.zybooks.nutrifittracker.ui.diary.DiaryFragment;
 import com.zybooks.nutrifittracker.ui.macros.MacrosFragment;
 import com.zybooks.nutrifittracker.viewmodel.SubjectListViewModel;
 
@@ -89,8 +88,6 @@ public class WorkoutActivity extends AppCompatActivity
                     } else if (itemId == R.id.navigation_workout) {
                         // Already in the WorkoutActivity, no need to navigate
                         return true;
-                    } else if (itemId == R.id.navigation_diary) {
-                        selectedFragment = new DiaryFragment();
                     }
 
                     if (selectedFragment != null) {

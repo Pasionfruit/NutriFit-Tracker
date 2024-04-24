@@ -3,17 +3,12 @@
 
     <item
         android:id="@+id/navigation_macros"
-        android:icon="@drawable/baseline_fastfood_24"
+        android:icon="@drawable/macros"
         android:title="@string/title_macros" />
 
     <item
         android:id="@+id/navigation_workout"
-        android:icon="@drawable/baseline_sports_gymnastics_24"
+        android:icon="@drawable/workout"
         android:title="@string/title_workout" />
-
-    <item
-        android:id="@+id/navigation_diary"
-        android:icon="@drawable/baseline_book_24"
-        android:title="@string/title_diary" />
 
 </menu>

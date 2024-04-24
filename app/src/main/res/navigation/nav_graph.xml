@@ -13,14 +13,8 @@
 
     <fragment
         android:id="@+id/navigation_macros"
-        android:name="com.zybooks.nutrifittracker.ui.macros.MacrosActivity"
+        android:name="com.zybooks.nutrifittracker.ui.macros.MacrosFragment"
         android:label="Macros Fragment"
-        tools:layout="@layout/activity_macros" />
-
-    <fragment
-        android:id="@+id/navigation_diary"
-        android:name="com.zybooks.nutrifittracker.ui.diary.DiaryFragment"
-        android:label="Diary Fragment"
-        tools:layout="@layout/activity_diary" />
+        tools:layout="@layout/fragment_macros" />
 
 </navigation>
