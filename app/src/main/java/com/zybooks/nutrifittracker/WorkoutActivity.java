@@ -79,26 +79,20 @@ public class WorkoutActivity extends AppCompatActivity
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                    Fragment selectedFragment = null;
                     int itemId = item.getItemId(); // Get the ID of the selected item
 
-                    // Use if-else statements instead of switch
                     if (itemId == R.id.navigation_macros) {
-                        selectedFragment = new MacrosFragment();
+                        Intent intent = new Intent(WorkoutActivity.this, MacrosActivity.class);
+                        startActivity(intent);
                     } else if (itemId == R.id.navigation_workout) {
-                        // Already in the WorkoutActivity, no need to navigate
-                        return true;
-                    }
 
-                    if (selectedFragment != null) {
-                        getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.fragment_container, selectedFragment)
-                                .commit();
+                        return true;
                     }
 
                     return true;
                 }
             };
+
 
     private SubjectSortOrder getSettingsSortOrder() {
         // Set sort order from settings
