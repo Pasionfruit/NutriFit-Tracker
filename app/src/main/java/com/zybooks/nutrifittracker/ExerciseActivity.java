@@ -47,7 +47,7 @@ public class ExerciseActivity extends AppCompatActivity {
         setContentView(R.layout.activity_exercise);
 
         mQuestionTextView = findViewById(R.id.question_text_view);
-        mAnswerLabelTextView = findViewById(R.id.answer_label_text_view);
+//        mAnswerLabelTextView = findViewById(R.id.answer_label_text_view);
         mAnswerTextView = findViewById(R.id.answer_text_view);
         mAnswerButton = findViewById(R.id.answer_button);
         mShowQuestionLayout = findViewById(R.id.show_question_layout);
