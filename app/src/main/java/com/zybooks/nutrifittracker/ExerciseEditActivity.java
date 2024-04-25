@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.zybooks.nutrifittracker.model.Question;
-import com.zybooks.nutrifittracker.viewmodel.QuestionDetailViewModel;
+import com.zybooks.nutrifittracker.viewmodel.ExerciseDetailViewModel;
 
 public class ExerciseEditActivity extends AppCompatActivity {
 
@@ -20,7 +20,7 @@ public class ExerciseEditActivity extends AppCompatActivity {
     private EditText repetitionsEditText;
     private EditText weightEditText;
     private Question mQuestion;
-    private QuestionDetailViewModel mQuestionDetailViewModel;
+    private ExerciseDetailViewModel mQuestionDetailViewModel;
     private long mQuestionId;
 
     @Override
@@ -40,7 +40,7 @@ public class ExerciseEditActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         mQuestionId = intent.getLongExtra(EXTRA_QUESTION_ID, -1);
-        mQuestionDetailViewModel = new ViewModelProvider(this).get(QuestionDetailViewModel.class);
+        mQuestionDetailViewModel = new ViewModelProvider(this).get(ExerciseDetailViewModel.class);
 
         if (mQuestionId == -1) {
             mQuestion = new Question();

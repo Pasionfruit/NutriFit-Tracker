@@ -13,7 +13,7 @@ import com.zybooks.nutrifittracker.repo.StudyRepository;
 
 import java.util.List;
 
-public class QuestionListViewModel extends AndroidViewModel {
+public class ExerciseListViewModel extends AndroidViewModel {
 
     private StudyRepository mStudyRepo;
     private final MutableLiveData<Long> mSubjectIdLiveData = new MutableLiveData<>();
@@ -22,7 +22,7 @@ public class QuestionListViewModel extends AndroidViewModel {
             Transformations.switchMap(mSubjectIdLiveData, subjectId ->
                     mStudyRepo.getQuestions(subjectId));
 
-    public QuestionListViewModel(@NonNull Application application) {
+    public ExerciseListViewModel(@NonNull Application application) {
         super(application);
         mStudyRepo = StudyRepository.getInstance(application.getApplicationContext());
     }

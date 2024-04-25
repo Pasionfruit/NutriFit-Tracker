@@ -21,7 +21,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.google.android.material.snackbar.Snackbar;
 import com.zybooks.nutrifittracker.model.Question;
 import com.zybooks.nutrifittracker.model.Subject;
-import com.zybooks.nutrifittracker.viewmodel.QuestionListViewModel;
+import com.zybooks.nutrifittracker.viewmodel.ExerciseListViewModel;
 
 import java.util.List;
 
@@ -30,7 +30,7 @@ public class ExerciseActivity extends AppCompatActivity {
     public static final String EXTRA_SUBJECT_ID = "com.zybooks.studyhelper.subject_id";
     public static final String EXTRA_SUBJECT_TEXT  = "com.zybooks.studyhelper.subject_text";
 
-    private QuestionListViewModel mQuestionListViewModel;
+    private ExerciseListViewModel mQuestionListViewModel;
     private Subject mSubject;
     private List<Question> mQuestionList;
     private TextView mAnswerLabelTextView;
@@ -65,7 +65,7 @@ public class ExerciseActivity extends AppCompatActivity {
         mSubject = new Subject(subjectText);
         mSubject.setId(subjectId);
 
-        mQuestionListViewModel = new ViewModelProvider(this).get(QuestionListViewModel.class);
+        mQuestionListViewModel = new ViewModelProvider(this).get(ExerciseListViewModel.class);
 
         mQuestionListViewModel.loadQuestions(subjectId);
         mQuestionListViewModel.questionListLiveData.observe(this, questions -> {

@@ -22,7 +22,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.zybooks.nutrifittracker.model.Subject;
-import com.zybooks.nutrifittracker.viewmodel.SubjectListViewModel;
+import com.zybooks.nutrifittracker.viewmodel.WorkoutListViewModel;
 
 import java.util.Comparator;
 import java.util.List;
@@ -38,7 +38,7 @@ public class WorkoutActivity extends AppCompatActivity
     private SubjectAdapter mSubjectAdapter;
     private RecyclerView mRecyclerView;
     private int[] mSubjectColors;
-    private SubjectListViewModel mSubjectListViewModel;
+    private WorkoutListViewModel mWorkoutListViewModel;
     private Subject mSelectedSubject;
     private int mSelectedSubjectPosition = RecyclerView.NO_POSITION;
     private ActionMode mActionMode = null;
@@ -48,7 +48,7 @@ public class WorkoutActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_workout);
 
-        mSubjectListViewModel = new ViewModelProvider(this).get(SubjectListViewModel.class);
+        mWorkoutListViewModel = new ViewModelProvider(this).get(WorkoutListViewModel.class);
 
         mSubjectColors = getResources().getIntArray(R.array.subjectColors);
 
@@ -59,7 +59,7 @@ public class WorkoutActivity extends AppCompatActivity
         mRecyclerView.setLayoutManager(gridLayoutManager);
 
         // Call updateUI() when the subject list changes
-        mSubjectListViewModel.getSubjects().observe(this, subjects -> {
+        mWorkoutListViewModel.getSubjects().observe(this, subjects -> {
             if (mLoadSubjectList) {
                 updateUI(subjects);
             }
@@ -121,7 +121,7 @@ public class WorkoutActivity extends AppCompatActivity
         if (subjectText.length() > 0) {
             Subject subject = new Subject(subjectText);
             mLoadSubjectList = false;
-            mSubjectListViewModel.addSubject(subject);
+            mWorkoutListViewModel.addSubject(subject);
             mSubjectAdapter.addSubject(subject);
             Toast.makeText(this, "Added " + subjectText, Toast.LENGTH_SHORT).show();
         }
@@ -197,7 +197,7 @@ public class WorkoutActivity extends AppCompatActivity
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
             if (item.getItemId() == R.id.delete) {
                 mLoadSubjectList = false;
-                mSubjectListViewModel.deleteSubject(mSelectedSubject);
+                mWorkoutListViewModel.deleteSubject(mSelectedSubject);
                 mSubjectAdapter.removeSubject(mSelectedSubject);
                 mode.finish();
                 return true;

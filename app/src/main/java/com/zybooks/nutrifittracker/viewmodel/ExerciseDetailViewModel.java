@@ -11,7 +11,7 @@ import androidx.lifecycle.Transformations;
 import com.zybooks.nutrifittracker.repo.StudyRepository;
 import com.zybooks.nutrifittracker.model.Question;
 
-public class QuestionDetailViewModel extends AndroidViewModel {
+public class ExerciseDetailViewModel extends AndroidViewModel {
 
     private StudyRepository mStudyRepo;
     private final MutableLiveData<Long> questionIdLiveData = new MutableLiveData<>();
@@ -20,7 +20,7 @@ public class QuestionDetailViewModel extends AndroidViewModel {
             Transformations.switchMap(questionIdLiveData, questionId ->
                     mStudyRepo.getQuestion(questionId));
 
-    public QuestionDetailViewModel(@NonNull Application application) {
+    public ExerciseDetailViewModel(@NonNull Application application) {
         super(application);
         mStudyRepo = StudyRepository.getInstance(application.getApplicationContext());
     }
