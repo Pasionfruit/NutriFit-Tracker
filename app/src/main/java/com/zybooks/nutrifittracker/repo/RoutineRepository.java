@@ -41,35 +41,6 @@ public class RoutineRepository {
         mRoutineFetcher = new RoutineFetcher(context);
     }
 
-    private void addStarterData() {
-        Workout workout = new Workout("Math");
-        long subjectId = mWorkoutDao.addSubject(workout);
-
-        Exercise exercise = new Exercise();
-        exercise.setText("What is 2 + 3?");
-        exercise.setAnswer("2 + 3 = 5");
-        exercise.setSubjectId(subjectId);
-        mExerciseDao.addQuestion(exercise);
-
-        exercise = new Exercise();
-        exercise.setText("What is pi?");
-        exercise.setAnswer("The ratio of a circle's circumference to its diameter.");
-        exercise.setSubjectId(subjectId);
-        mExerciseDao.addQuestion(exercise);
-
-        workout = new Workout("History");
-        subjectId = mWorkoutDao.addSubject(workout);
-
-        exercise = new Exercise();
-        exercise.setText("On what date was the U.S. Declaration of Independence adopted?");
-        exercise.setAnswer("July 4, 1776");
-        exercise.setSubjectId(subjectId);
-        mExerciseDao.addQuestion(exercise);
-
-        workout = new Workout("Computing");
-        mWorkoutDao.addSubject(workout);
-    }
-
     public void addSubject(Workout workout) {
         long subjectId = mWorkoutDao.addSubject(workout);
         workout.setId(subjectId);

@@ -27,6 +27,12 @@ public class Exercise {
     @ColumnInfo(name = "subject_id")
     private long mSubjectId;
 
+    // Constructor
+    public Exercise(String text, String answer, String weight) {
+        mText = text;
+        mAnswer = answer;
+        mWeight = weight;
+    }
 
     public void setId(long id) {
         mId = id;

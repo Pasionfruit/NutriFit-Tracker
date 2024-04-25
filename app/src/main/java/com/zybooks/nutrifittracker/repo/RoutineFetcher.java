@@ -100,7 +100,7 @@ public class RoutineFetcher {
             for (int i = 0; i < questionArray.length(); i++) {
                 JSONObject questionObj = questionArray.getJSONObject(i);
 
-                Exercise exercise = new Exercise();
+                Exercise exercise = new Exercise("","","");
                 exercise.setText(questionObj.getString("question"));
                 exercise.setAnswer(questionObj.getString("answer"));
                 exercise.setSubjectId(0);

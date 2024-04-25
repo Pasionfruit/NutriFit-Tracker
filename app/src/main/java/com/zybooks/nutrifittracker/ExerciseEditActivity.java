@@ -43,7 +43,7 @@ public class ExerciseEditActivity extends AppCompatActivity {
         mQuestionDetailViewModel = new ViewModelProvider(this).get(ExerciseDetailViewModel.class);
 
         if (mQuestionId == -1) {
-            mExercise = new Exercise();
+            mExercise = new Exercise("","","");
             mExercise.setSubjectId(intent.getLongExtra(EXTRA_SUBJECT_ID, 0));
             setTitle(R.string.add_exercise);
         } else {

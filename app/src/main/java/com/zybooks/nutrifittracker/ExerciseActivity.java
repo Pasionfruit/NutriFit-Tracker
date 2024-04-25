@@ -17,12 +17,15 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.zybooks.nutrifittracker.model.Exercise;
 import com.zybooks.nutrifittracker.model.Workout;
 import com.zybooks.nutrifittracker.viewmodel.ExerciseListViewModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ExerciseActivity extends AppCompatActivity {
@@ -41,6 +44,8 @@ public class ExerciseActivity extends AppCompatActivity {
     private ViewGroup mShowQuestionLayout;
     private ViewGroup mNoQuestionLayout;
     private int mCurrentQuestionIndex = 0;
+    private RecyclerView mRecyclerView;
+    private ExerciseAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +60,7 @@ public class ExerciseActivity extends AppCompatActivity {
         mNoQuestionLayout = findViewById(R.id.no_question_layout);
 
         // Add click callbacks
-        mAnswerButton.setOnClickListener(view -> toggleAnswerVisibility());
+        mAnswerButton.setOnClickListener(view -> logWorkout());
         findViewById(R.id.add_question_button).setOnClickListener(view -> addQuestion());
 
         // SubjectActivity should provide the subject ID and text
@@ -72,6 +77,18 @@ public class ExerciseActivity extends AppCompatActivity {
         mQuestionListViewModel.questionListLiveData.observe(this, questions -> {
             mExerciseList = questions;
             updateUI();
+        });
+        mRecyclerView = findViewById(R.id.recycler_view_exercises);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mAdapter = new ExerciseAdapter(new ArrayList<>());
+        mRecyclerView.setAdapter(mAdapter);
+
+        // Initialize ViewModel and observe changes
+        mQuestionListViewModel = new ViewModelProvider(this).get(ExerciseListViewModel.class);
+        mQuestionListViewModel.loadQuestions(subjectId);
+        mQuestionListViewModel.questionListLiveData.observe(this, exercises -> {
+            mExerciseList = exercises;
+            mAdapter.setExercises(exercises);
         });
     }
 
@@ -215,14 +232,23 @@ public class ExerciseActivity extends AppCompatActivity {
         }
     }
 
-    private void toggleAnswerVisibility() {
-        if (mAnswerTextView.getVisibility() == View.VISIBLE) {
-            mAnswerButton.setText(R.string.show_answer);
-            mAnswerTextView.setVisibility(View.INVISIBLE);
+    private void logWorkout() {
+        // Create a new Exercise object with the current exercise details
+        Exercise loggedExercise = new Exercise(
+                mNameTextView.getText().toString(), // Exercise name
+                mQuestionTextView.getText().toString(), // Repetitions
+                mAnswerTextView.getText().toString() // Weight
+        );
+
+        // Add the logged exercise to the list of exercises
+        if (mExerciseList != null) {
+            mExerciseList.add(loggedExercise);
+            // Notify the adapter that the dataset has changed
+            mAdapter.setExercises(mExerciseList);
+            mAdapter.notifyDataSetChanged();
         }
-        else {
-            mAnswerButton.setText(R.string.show_answer);
-            mAnswerTextView.setVisibility(View.VISIBLE);
-        }
+
+        // Show a toast message to indicate that the exercise has been logged
+        Toast.makeText(this, "Exercise logged", Toast.LENGTH_SHORT).show();
     }
 }
