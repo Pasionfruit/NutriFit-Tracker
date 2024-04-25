@@ -21,6 +21,9 @@ public class Exercise {
     @ColumnInfo(name = "answer")
     private String mAnswer;
 
+    @ColumnInfo(name = "weight")
+    private String mWeight;
+
     @ColumnInfo(name = "subject_id")
     private long mSubjectId;
 
@@ -47,6 +50,14 @@ public class Exercise {
 
     public void setAnswer(String answer) {
         mAnswer = answer;
+    }
+
+    public String getWeight() {
+        return mWeight;
+    }
+
+    public void setWeight(String weight) {
+        mWeight = weight;
     }
 
     public long getSubjectId() {

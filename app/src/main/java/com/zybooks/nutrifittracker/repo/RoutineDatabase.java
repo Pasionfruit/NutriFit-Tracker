@@ -6,7 +6,7 @@ import androidx.room.RoomDatabase;
 import com.zybooks.nutrifittracker.model.Exercise;
 import com.zybooks.nutrifittracker.model.Workout;
 
-@Database(entities = {Exercise.class, Workout.class}, version = 4)
+@Database(entities = {Exercise.class, Workout.class}, version = 5)
 public abstract class RoutineDatabase extends RoomDatabase {
 
     public abstract ExerciseDao questionDao();

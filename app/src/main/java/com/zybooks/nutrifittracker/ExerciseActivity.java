@@ -33,9 +33,10 @@ public class ExerciseActivity extends AppCompatActivity {
     private ExerciseListViewModel mQuestionListViewModel;
     private Workout mWorkout;
     private List<Exercise> mExerciseList;
-    private TextView mAnswerLabelTextView;
     private TextView mAnswerTextView;
     private Button mAnswerButton;
+
+    private TextView mNameTextView;
     private TextView mQuestionTextView;
     private ViewGroup mShowQuestionLayout;
     private ViewGroup mNoQuestionLayout;
@@ -46,8 +47,8 @@ public class ExerciseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercise);
 
+        mNameTextView = findViewById(R.id.exercise_name_text_view);
         mQuestionTextView = findViewById(R.id.repetition_text_view);
-        //mAnswerLabelTextView = findViewById(R.id.answer_label_text_view);
         mAnswerTextView = findViewById(R.id.weight_text_view);
         mAnswerButton = findViewById(R.id.answer_button);
         mShowQuestionLayout = findViewById(R.id.show_question_layout);
@@ -204,8 +205,9 @@ public class ExerciseActivity extends AppCompatActivity {
             updateAppBarTitle();
 
             Exercise exercise = mExerciseList.get(mCurrentQuestionIndex);
-            mQuestionTextView.setText(exercise.getText());
+            mQuestionTextView.setText(exercise.getWeight());
             mAnswerTextView.setText(exercise.getAnswer());
+            mNameTextView.setText(exercise.getText());
         }
         else {
             // No questions yet
@@ -217,12 +219,10 @@ public class ExerciseActivity extends AppCompatActivity {
         if (mAnswerTextView.getVisibility() == View.VISIBLE) {
             mAnswerButton.setText(R.string.show_answer);
             mAnswerTextView.setVisibility(View.INVISIBLE);
-            mAnswerLabelTextView.setVisibility(View.INVISIBLE);
         }
         else {
             mAnswerButton.setText(R.string.show_answer);
             mAnswerTextView.setVisibility(View.VISIBLE);
-            mAnswerLabelTextView.setVisibility(View.VISIBLE);
         }
     }
 }

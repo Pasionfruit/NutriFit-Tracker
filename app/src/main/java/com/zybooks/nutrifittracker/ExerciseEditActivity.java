@@ -83,13 +83,14 @@ public class ExerciseEditActivity extends AppCompatActivity {
 
     private void updateUI() {
         exerciseNameEditText.setText(mExercise.getText());
-        repetitionsEditText.setText(mExercise.getAnswer()); // Assume repetitions and weight in one field for simplicity, split if necessary
-        weightEditText.setText(""); // Assuming another field or parsing logic needed
+        repetitionsEditText.setText(mExercise.getAnswer());
+        weightEditText.setText(mExercise.getWeight()); // Convert long to String
     }
 
     private void saveButtonClick() {
         mExercise.setText(exerciseNameEditText.getText().toString());
         mExercise.setAnswer(repetitionsEditText.getText().toString());
+        mExercise.setWeight(weightEditText.getText().toString());
 
         if (mQuestionId == -1) {
             mQuestionDetailViewModel.addQuestion(mExercise);
