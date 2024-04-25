@@ -88,6 +88,9 @@ public class ExerciseEditActivity extends AppCompatActivity {
     }
 
     private void saveButtonClick() {
+        mExercise.setText(exerciseNameEditText.getText().toString());
+        mExercise.setAnswer(repetitionsEditText.getText().toString());
+
         if (mQuestionId == -1) {
             mQuestionDetailViewModel.addQuestion(mExercise);
         } else {

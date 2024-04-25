@@ -46,9 +46,9 @@ public class ExerciseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercise);
 
-        mQuestionTextView = findViewById(R.id.question_text_view);
-//        mAnswerLabelTextView = findViewById(R.id.answer_label_text_view);
-        mAnswerTextView = findViewById(R.id.answer_text_view);
+        mQuestionTextView = findViewById(R.id.repetition_text_view);
+        //mAnswerLabelTextView = findViewById(R.id.answer_label_text_view);
+        mAnswerTextView = findViewById(R.id.weight_text_view);
         mAnswerButton = findViewById(R.id.answer_button);
         mShowQuestionLayout = findViewById(R.id.show_question_layout);
         mNoQuestionLayout = findViewById(R.id.no_question_layout);
@@ -220,7 +220,7 @@ public class ExerciseActivity extends AppCompatActivity {
             mAnswerLabelTextView.setVisibility(View.INVISIBLE);
         }
         else {
-            mAnswerButton.setText(R.string.set_completed);
+            mAnswerButton.setText(R.string.show_answer);
             mAnswerTextView.setVisibility(View.VISIBLE);
             mAnswerLabelTextView.setVisibility(View.VISIBLE);
         }

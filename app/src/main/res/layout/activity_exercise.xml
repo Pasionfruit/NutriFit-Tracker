@@ -54,7 +54,7 @@
             android:padding="10mm">
 
             <TextView
-                android:id="@+id/question_text_view"
+                android:id="@+id/repetition_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/repetition_name"
@@ -67,7 +67,7 @@
                 android:textSize="30sp" />
 
             <TextView
-                android:id="@+id/answer_text_view"
+                android:id="@+id/weight_text_view"
                 android:layout_width="129dp"
                 android:layout_height="wrap_content"
                 android:text="Weight"
