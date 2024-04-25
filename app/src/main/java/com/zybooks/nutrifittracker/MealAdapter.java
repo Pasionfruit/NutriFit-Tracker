@@ -4,16 +4,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.ItemTouchHelper;
 
 import com.zybooks.nutrifittracker.model.Meal;
 
 import java.util.List;
 
 public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder> {
-    List<Meal> meals;
+    private List<Meal> meals;
 
     public MealAdapter(List<Meal> meals) {
         this.meals = meals;
@@ -44,6 +44,11 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
 
     public Meal getMeal(int position) {
         return meals.get(position);
+    }
+
+    public void deleteItem(int position) {
+        meals.remove(position);
+        notifyItemRemoved(position);
     }
 
     static class MealViewHolder extends RecyclerView.ViewHolder {

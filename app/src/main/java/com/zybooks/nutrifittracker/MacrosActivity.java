@@ -23,6 +23,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.zybooks.nutrifittracker.model.Meal;
 import com.zybooks.nutrifittracker.viewmodel.MealViewModel;
+import androidx.recyclerview.widget.ItemTouchHelper;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,6 +67,24 @@ public class MacrosActivity extends AppCompatActivity {
 
         // Initialize ViewModel
         mealViewModel = new ViewModelProvider(this).get(MealViewModel.class);
+        mealViewModel.getAllMeals().observe(this, meals -> mealAdapter.setMeals(meals));
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(
+                0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                int position = viewHolder.getAdapterPosition();
+                Meal mealToDelete = mealAdapter.getMeal(position);
+                mealViewModel.delete(mealToDelete);
+                Toast.makeText(MacrosActivity.this, "Meal deleted", Toast.LENGTH_SHORT).show();
+            }
+        });
+        itemTouchHelper.attachToRecyclerView(recyclerView);
 
         // Observe changes in the list of meals
         mealViewModel.getAllMeals().observe(this, meals -> mealAdapter.setMeals(meals));
@@ -104,11 +124,6 @@ public class MacrosActivity extends AppCompatActivity {
             assert viewHolder != null;
             int position = viewHolder.getAdapterPosition();
 
-            // Get the meal at the selected position
-            Meal mealToDelete = mealAdapter.meals.get(position);
-
-            // Delete the meal from the database via the ViewModel
-            mealViewModel.delete(mealToDelete);
 
             Toast.makeText(this, "Meal deleted", Toast.LENGTH_SHORT).show();
             return true;

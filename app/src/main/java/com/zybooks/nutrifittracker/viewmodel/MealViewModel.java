@@ -29,8 +29,8 @@ public class MealViewModel extends AndroidViewModel {
         mealRepository.insert(meal);
     }
 
-    public void delete(Meal mealToDelete) {
-        mealRepository.delete(mealToDelete);
+    public void delete(Meal meal) {
+        mealRepository.delete(meal);
     }
 }
 
