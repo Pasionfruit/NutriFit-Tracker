@@ -1,6 +1,13 @@
 package com.zybooks.nutrifittracker.model;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity(tableName = "meals")
 public class Meal {
+    @PrimaryKey(autoGenerate = true)
+    private long id; // Add an id field as the primary key
+
     private String name;
     private String type;
     private int calories;
@@ -18,6 +25,14 @@ public class Meal {
     }
 
     // Getters and setters for meal attributes
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
     }
@@ -66,4 +81,3 @@ public class Meal {
         this.protein = protein;
     }
 }
-

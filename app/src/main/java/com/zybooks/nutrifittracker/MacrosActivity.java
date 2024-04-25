@@ -1,9 +1,10 @@
 package com.zybooks.nutrifittracker;
 
 import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -15,18 +16,24 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.zybooks.nutrifittracker.R;
-import com.zybooks.nutrifittracker.WorkoutActivity;
 import com.zybooks.nutrifittracker.model.Meal;
+import com.zybooks.nutrifittracker.viewmodel.MealViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class MacrosActivity extends AppCompatActivity {
     private static final String[] MEAL_TYPES = {"Breakfast", "Lunch", "Snack", "Dinner"};
 
-    private List<Meal> mealList = new ArrayList<>(); // List to store meals
+    private RecyclerView recyclerView;
+    private MealAdapter mealAdapter;
+    private MealViewModel mealViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,23 +53,69 @@ public class MacrosActivity extends AppCompatActivity {
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav_view);
         bottomNavigationView.setOnNavigationItemSelectedListener(navListener);
-        bottomNavigationView.setSelectedItemId(R.id.navigation_macros);  // Mark the Macros item as selected
+        bottomNavigationView.setSelectedItemId(R.id.navigation_macros);
 
-        // Find the add button in your layout
         Button addButton = findViewById(R.id.add_button);
 
-        // Set a click listener for the add button
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addMealToList(); // Call method to add meal to list
-            }
-        });
+        recyclerView = findViewById(R.id.recycler_view_meals);
+        mealAdapter = new MealAdapter(new ArrayList<>()); // Initialize with an empty list
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(mealAdapter);
+        registerForContextMenu(recyclerView);
+
+        // Initialize ViewModel
+        mealViewModel = new ViewModelProvider(this).get(MealViewModel.class);
+
+        // Observe changes in the list of meals
+        mealViewModel.getAllMeals().observe(this, meals -> mealAdapter.setMeals(meals));
+
+        addButton.setOnClickListener(v -> addMealToList()); // Lambda expression for click listener
     }
 
-    // Method to add a meal to the list
-    // Method to add a meal to the list
-    // Method to add a meal to the list
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.macros_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.settings) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        getMenuInflater().inflate(R.menu.context_menu, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.delete) {
+            // Get the position of the selected item
+            RecyclerView.ViewHolder viewHolder = recyclerView.findContainingViewHolder(((View) Objects.requireNonNull(item.getActionView())));
+            assert viewHolder != null;
+            int position = viewHolder.getAdapterPosition();
+
+            // Get the meal at the selected position
+            Meal mealToDelete = mealAdapter.meals.get(position);
+
+            // Delete the meal from the database via the ViewModel
+            mealViewModel.delete(mealToDelete);
+
+            Toast.makeText(this, "Meal deleted", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        return super.onContextItemSelected(item);
+    }
+
     private void addMealToList() {
         EditText mealNameEditText = findViewById(R.id.meal_name);
         Spinner mealTypeSpinner = findViewById(R.id.meal_type_spinner);
@@ -71,7 +124,6 @@ public class MacrosActivity extends AppCompatActivity {
         EditText fatsEditText = findViewById(R.id.fats);
         EditText proteinEditText = findViewById(R.id.protein);
 
-        // Retrieve values entered by the user
         String mealName = mealNameEditText.getText().toString();
         String mealType = mealTypeSpinner.getSelectedItem().toString();
         String caloriesStr = caloriesEditText.getText().toString();
@@ -79,47 +131,8 @@ public class MacrosActivity extends AppCompatActivity {
         String fatsStr = fatsEditText.getText().toString();
         String proteinStr = proteinEditText.getText().toString();
 
-        // Flag to indicate if there are any invalid inputs
-        boolean hasInvalidInput = false;
-
         // Check if any of the input fields are empty
-        if (mealName.isEmpty()) {
-            mealNameEditText.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
-            hasInvalidInput = true;
-        } else {
-            mealNameEditText.setBackgroundTintList(ColorStateList.valueOf(Color.BLUE)); // Revert to default color
-        }
-
-        if (caloriesStr.isEmpty()) {
-            caloriesEditText.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
-            hasInvalidInput = true;
-        } else {
-            caloriesEditText.setBackgroundTintList(ColorStateList.valueOf(Color.BLUE)); // Revert to default color
-        }
-
-        if (carbsStr.isEmpty()) {
-            carbsEditText.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
-            hasInvalidInput = true;
-        } else {
-            carbsEditText.setBackgroundTintList(ColorStateList.valueOf(Color.BLUE)); // Revert to default color
-        }
-
-        if (fatsStr.isEmpty()) {
-            fatsEditText.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
-            hasInvalidInput = true;
-        } else {
-            fatsEditText.setBackgroundTintList(ColorStateList.valueOf(Color.BLUE)); // Revert to default color
-        }
-
-        if (proteinStr.isEmpty()) {
-            proteinEditText.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
-            hasInvalidInput = true;
-        } else {
-            proteinEditText.setBackgroundTintList(ColorStateList.valueOf(Color.BLUE)); // Revert to default color
-        }
-
-        // If any input is invalid, display a toast message and return
-        if (hasInvalidInput) {
+        if (mealName.isEmpty() || caloriesStr.isEmpty() || carbsStr.isEmpty() || fatsStr.isEmpty() || proteinStr.isEmpty()) {
             Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -133,10 +146,10 @@ public class MacrosActivity extends AppCompatActivity {
         // Create a new instance of the Meal class with the retrieved values
         Meal meal = new Meal(mealName, mealType, calories, carbs, fats, protein);
 
-        // Add the meal to the list
-        mealList.add(meal);
+        // Insert the meal into the database via the ViewModel
+        mealViewModel.insert(meal);
 
-        // Optionally, you can clear the input fields after adding the meal
+        // Clear the input fields after adding the meal
         mealNameEditText.getText().clear();
         caloriesEditText.getText().clear();
         carbsEditText.getText().clear();
