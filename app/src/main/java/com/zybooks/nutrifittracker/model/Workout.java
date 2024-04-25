@@ -6,7 +6,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity
-public class Subject {
+public class Workout {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     private long mId;
@@ -17,7 +17,7 @@ public class Subject {
     @ColumnInfo(name = "updated")
     private long mUpdateTime;
 
-    public Subject(@NonNull String text) {
+    public Workout(@NonNull String text) {
         mText = text;
         mUpdateTime = System.currentTimeMillis();
     }

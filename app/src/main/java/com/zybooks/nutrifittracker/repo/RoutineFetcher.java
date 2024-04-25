@@ -9,8 +9,8 @@ import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.zybooks.nutrifittracker.model.Subject;
-import com.zybooks.nutrifittracker.model.Question;
+import com.zybooks.nutrifittracker.model.Exercise;
+import com.zybooks.nutrifittracker.model.Workout;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,8 +22,8 @@ import java.util.List;
 public class RoutineFetcher {
 
     public interface OnStudyDataReceivedListener {
-        void onSubjectsReceived(List<Subject> subjectList);
-        void onQuestionsReceived(Subject subject, List<Question> questionList);
+        void onSubjectsReceived(List<Workout> workoutList);
+        void onQuestionsReceived(Workout workout, List<Exercise> exerciseList);
         void onErrorResponse(VolleyError error);
     }
 
@@ -50,10 +50,10 @@ public class RoutineFetcher {
         mRequestQueue.add(request);
     }
 
-    private List<Subject> jsonToSubjects(JSONObject json) {
+    private List<Workout> jsonToSubjects(JSONObject json) {
 
         // Create a list of subjects
-        List<Subject> subjectList = new ArrayList<>();
+        List<Workout> workoutList = new ArrayList<>();
 
         try {
             JSONArray subjectArray = json.getJSONArray("subjects");
@@ -61,38 +61,38 @@ public class RoutineFetcher {
             for (int i = 0; i < subjectArray.length(); i++) {
                 JSONObject subjectObj = subjectArray.getJSONObject(i);
 
-                Subject subject = new Subject(subjectObj.getString("subject"));
-                subject.setUpdateTime(subjectObj.getLong("updatetime"));
-                subjectList.add(subject);
+                Workout workout = new Workout(subjectObj.getString("subject"));
+                workout.setUpdateTime(subjectObj.getLong("updatetime"));
+                workoutList.add(workout);
             }
         }
         catch (Exception e) {
             Log.e(TAG, "Field missing in the JSON data: " + e.getMessage());
         }
 
-        return subjectList;
+        return workoutList;
     }
 
-    public void fetchQuestions(final Subject subject, final OnStudyDataReceivedListener listener) {
+    public void fetchQuestions(final Workout workout, final OnStudyDataReceivedListener listener) {
 
         String url = Uri.parse(WEBAPI_BASE_URL).buildUpon()
                 .appendQueryParameter("type", "questions")
-                .appendQueryParameter("subject", subject.getText())
+                .appendQueryParameter("subject", workout.getText())
                 .build().toString();
 
         // Request questions for this subject
         JsonObjectRequest jsObjRequest = new JsonObjectRequest(
                 Request.Method.GET, url, null,
-                response -> listener.onQuestionsReceived(subject, jsonToQuestions(response)),
+                response -> listener.onQuestionsReceived(workout, jsonToQuestions(response)),
                 listener::onErrorResponse);
 
         mRequestQueue.add(jsObjRequest);
     }
 
-    private List<Question> jsonToQuestions(JSONObject json) {
+    private List<Exercise> jsonToQuestions(JSONObject json) {
 
         // Create a list of questions
-        List<Question> questionList = new ArrayList<>();
+        List<Exercise> exerciseList = new ArrayList<>();
 
         try {
             JSONArray questionArray = json.getJSONArray("questions");
@@ -100,17 +100,17 @@ public class RoutineFetcher {
             for (int i = 0; i < questionArray.length(); i++) {
                 JSONObject questionObj = questionArray.getJSONObject(i);
 
-                Question question = new Question();
-                question.setText(questionObj.getString("question"));
-                question.setAnswer(questionObj.getString("answer"));
-                question.setSubjectId(0);
-                questionList.add(question);
+                Exercise exercise = new Exercise();
+                exercise.setText(questionObj.getString("question"));
+                exercise.setAnswer(questionObj.getString("answer"));
+                exercise.setSubjectId(0);
+                exerciseList.add(exercise);
             }
         }
         catch (JSONException e) {
             Log.e(TAG, "Field missing in the JSON data: " + e.getMessage());
         }
 
-        return questionList;
+        return exerciseList;
     }
 }

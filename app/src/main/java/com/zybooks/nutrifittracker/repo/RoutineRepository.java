@@ -7,15 +7,15 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.room.Room;
 
 import com.android.volley.VolleyError;
-import com.zybooks.nutrifittracker.model.Question;
-import com.zybooks.nutrifittracker.model.Subject;
+import com.zybooks.nutrifittracker.model.Exercise;
+import com.zybooks.nutrifittracker.model.Workout;
 
 import java.util.List;
 
 public class RoutineRepository {
 
     public MutableLiveData<String> importedSubject = new MutableLiveData<>();
-    public MutableLiveData<List<Subject>> fetchedSubjectList = new MutableLiveData<>();
+    public MutableLiveData<List<Workout>> fetchedSubjectList = new MutableLiveData<>();
 
     private final RoutineFetcher mRoutineFetcher;
     private static RoutineRepository mStudyRepo;
@@ -42,96 +42,96 @@ public class RoutineRepository {
     }
 
     private void addStarterData() {
-        Subject subject = new Subject("Math");
-        long subjectId = mWorkoutDao.addSubject(subject);
+        Workout workout = new Workout("Math");
+        long subjectId = mWorkoutDao.addSubject(workout);
 
-        Question question = new Question();
-        question.setText("What is 2 + 3?");
-        question.setAnswer("2 + 3 = 5");
-        question.setSubjectId(subjectId);
-        mExerciseDao.addQuestion(question);
+        Exercise exercise = new Exercise();
+        exercise.setText("What is 2 + 3?");
+        exercise.setAnswer("2 + 3 = 5");
+        exercise.setSubjectId(subjectId);
+        mExerciseDao.addQuestion(exercise);
 
-        question = new Question();
-        question.setText("What is pi?");
-        question.setAnswer("The ratio of a circle's circumference to its diameter.");
-        question.setSubjectId(subjectId);
-        mExerciseDao.addQuestion(question);
+        exercise = new Exercise();
+        exercise.setText("What is pi?");
+        exercise.setAnswer("The ratio of a circle's circumference to its diameter.");
+        exercise.setSubjectId(subjectId);
+        mExerciseDao.addQuestion(exercise);
 
-        subject = new Subject("History");
-        subjectId = mWorkoutDao.addSubject(subject);
+        workout = new Workout("History");
+        subjectId = mWorkoutDao.addSubject(workout);
 
-        question = new Question();
-        question.setText("On what date was the U.S. Declaration of Independence adopted?");
-        question.setAnswer("July 4, 1776");
-        question.setSubjectId(subjectId);
-        mExerciseDao.addQuestion(question);
+        exercise = new Exercise();
+        exercise.setText("On what date was the U.S. Declaration of Independence adopted?");
+        exercise.setAnswer("July 4, 1776");
+        exercise.setSubjectId(subjectId);
+        mExerciseDao.addQuestion(exercise);
 
-        subject = new Subject("Computing");
-        mWorkoutDao.addSubject(subject);
+        workout = new Workout("Computing");
+        mWorkoutDao.addSubject(workout);
     }
 
-    public void addSubject(Subject subject) {
-        long subjectId = mWorkoutDao.addSubject(subject);
-        subject.setId(subjectId);
+    public void addSubject(Workout workout) {
+        long subjectId = mWorkoutDao.addSubject(workout);
+        workout.setId(subjectId);
     }
 
-    public LiveData<Subject> getSubject(long subjectId) {
+    public LiveData<Workout> getSubject(long subjectId) {
         return mWorkoutDao.getSubject(subjectId);
     }
 
-    public LiveData<List<Subject>> getSubjects() {
+    public LiveData<List<Workout>> getSubjects() {
         return mWorkoutDao.getSubjects();
     }
 
-    public void deleteSubject(Subject subject) {
-        mWorkoutDao.deleteSubject(subject);
+    public void deleteSubject(Workout workout) {
+        mWorkoutDao.deleteSubject(workout);
     }
 
-    public LiveData<Question> getQuestion(long questionId) {
+    public LiveData<Exercise> getQuestion(long questionId) {
         return mExerciseDao.getQuestion(questionId);
     }
 
-    public LiveData<List<Question>> getQuestions(long subjectId) {
+    public LiveData<List<Exercise>> getQuestions(long subjectId) {
         return mExerciseDao.getQuestions(subjectId);
     }
 
-    public void addQuestion(Question question) {
-        long questionId = mExerciseDao.addQuestion(question);
-        question.setId(questionId);
+    public void addQuestion(Exercise exercise) {
+        long questionId = mExerciseDao.addQuestion(exercise);
+        exercise.setId(questionId);
     }
 
-    public void updateQuestion(Question question) {
-        mExerciseDao.updateQuestion(question);
+    public void updateQuestion(Exercise exercise) {
+        mExerciseDao.updateQuestion(exercise);
     }
 
-    public void deleteQuestion(Question question) {
-        mExerciseDao.deleteQuestion(question);
+    public void deleteQuestion(Exercise exercise) {
+        mExerciseDao.deleteQuestion(exercise);
     }
 
     public void fetchSubjects() {
         mRoutineFetcher.fetchSubjects(mFetchListener);
     }
 
-    public void fetchQuestions(Subject subject) {
-        mRoutineFetcher.fetchQuestions(subject, mFetchListener);
+    public void fetchQuestions(Workout workout) {
+        mRoutineFetcher.fetchQuestions(workout, mFetchListener);
     }
 
     private final RoutineFetcher.OnStudyDataReceivedListener mFetchListener =
             new RoutineFetcher.OnStudyDataReceivedListener() {
 
                 @Override
-                public void onSubjectsReceived(List<Subject> subjectList) {
-                    fetchedSubjectList.setValue(subjectList);
+                public void onSubjectsReceived(List<Workout> workoutList) {
+                    fetchedSubjectList.setValue(workoutList);
                 }
 
                 @Override
-                public void onQuestionsReceived(Subject subject, List<Question> questionList) {
-                    for (Question question : questionList) {
-                        question.setSubjectId(subject.getId());
-                        addQuestion(question);
+                public void onQuestionsReceived(Workout workout, List<Exercise> exerciseList) {
+                    for (Exercise exercise : exerciseList) {
+                        exercise.setSubjectId(workout.getId());
+                        addQuestion(exercise);
                     }
 
-                    importedSubject.setValue(subject.getText());
+                    importedSubject.setValue(workout.getText());
                 }
 
                 @Override

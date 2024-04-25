@@ -11,10 +11,4 @@
         android:label="Workout Fragment"
         tools:layout="@layout/activity_workout" />
 
-    <fragment
-        android:id="@+id/navigation_macros"
-        android:name="com.zybooks.nutrifittracker.ui.macros.MacrosFragment"
-        android:label="Macros Fragment"
-        tools:layout="@layout/fragment_macros" />
-
 </navigation>

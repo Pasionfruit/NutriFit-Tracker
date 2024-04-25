@@ -8,7 +8,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.zybooks.nutrifittracker.model.Question;
+import com.zybooks.nutrifittracker.model.Exercise;
 import com.zybooks.nutrifittracker.viewmodel.ExerciseDetailViewModel;
 
 public class ExerciseEditActivity extends AppCompatActivity {
@@ -19,7 +19,7 @@ public class ExerciseEditActivity extends AppCompatActivity {
     private EditText exerciseNameEditText;
     private EditText repetitionsEditText;
     private EditText weightEditText;
-    private Question mQuestion;
+    private Exercise mExercise;
     private ExerciseDetailViewModel mQuestionDetailViewModel;
     private long mQuestionId;
 
@@ -43,13 +43,13 @@ public class ExerciseEditActivity extends AppCompatActivity {
         mQuestionDetailViewModel = new ViewModelProvider(this).get(ExerciseDetailViewModel.class);
 
         if (mQuestionId == -1) {
-            mQuestion = new Question();
-            mQuestion.setSubjectId(intent.getLongExtra(EXTRA_SUBJECT_ID, 0));
+            mExercise = new Exercise();
+            mExercise.setSubjectId(intent.getLongExtra(EXTRA_SUBJECT_ID, 0));
             setTitle(R.string.add_exercise);
         } else {
             mQuestionDetailViewModel.loadQuestion(mQuestionId);
             mQuestionDetailViewModel.questionLiveData.observe(this, question -> {
-                mQuestion = question;
+                mExercise = question;
                 updateUI();
             });
             setTitle(R.string.edit_question);
@@ -82,16 +82,16 @@ public class ExerciseEditActivity extends AppCompatActivity {
     }
 
     private void updateUI() {
-        exerciseNameEditText.setText(mQuestion.getText());
-        repetitionsEditText.setText(mQuestion.getAnswer()); // Assume repetitions and weight in one field for simplicity, split if necessary
+        exerciseNameEditText.setText(mExercise.getText());
+        repetitionsEditText.setText(mExercise.getAnswer()); // Assume repetitions and weight in one field for simplicity, split if necessary
         weightEditText.setText(""); // Assuming another field or parsing logic needed
     }
 
     private void saveButtonClick() {
         if (mQuestionId == -1) {
-            mQuestionDetailViewModel.addQuestion(mQuestion);
+            mQuestionDetailViewModel.addQuestion(mExercise);
         } else {
-            mQuestionDetailViewModel.updateQuestion(mQuestion);
+            mQuestionDetailViewModel.updateQuestion(mExercise);
         }
         setResult(RESULT_OK);
         finish();

@@ -19,8 +19,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.snackbar.Snackbar;
-import com.zybooks.nutrifittracker.model.Question;
-import com.zybooks.nutrifittracker.model.Subject;
+import com.zybooks.nutrifittracker.model.Exercise;
+import com.zybooks.nutrifittracker.model.Workout;
 import com.zybooks.nutrifittracker.viewmodel.ExerciseListViewModel;
 
 import java.util.List;
@@ -31,8 +31,8 @@ public class ExerciseActivity extends AppCompatActivity {
     public static final String EXTRA_SUBJECT_TEXT  = "com.zybooks.studyhelper.subject_text";
 
     private ExerciseListViewModel mQuestionListViewModel;
-    private Subject mSubject;
-    private List<Question> mQuestionList;
+    private Workout mWorkout;
+    private List<Exercise> mExerciseList;
     private TextView mAnswerLabelTextView;
     private TextView mAnswerTextView;
     private Button mAnswerButton;
@@ -62,14 +62,14 @@ public class ExerciseActivity extends AppCompatActivity {
         long subjectId = intent.getLongExtra(EXTRA_SUBJECT_ID, 0);
         String subjectText = intent.getStringExtra(EXTRA_SUBJECT_TEXT);
         assert subjectText != null;
-        mSubject = new Subject(subjectText);
-        mSubject.setId(subjectId);
+        mWorkout = new Workout(subjectText);
+        mWorkout.setId(subjectId);
 
         mQuestionListViewModel = new ViewModelProvider(this).get(ExerciseListViewModel.class);
 
         mQuestionListViewModel.loadQuestions(subjectId);
         mQuestionListViewModel.questionListLiveData.observe(this, questions -> {
-            mQuestionList = questions;
+            mExerciseList = questions;
             updateUI();
         });
     }
@@ -77,7 +77,7 @@ public class ExerciseActivity extends AppCompatActivity {
     private void updateUI() {
         showQuestion(mCurrentQuestionIndex);
 
-        if (mQuestionList.isEmpty()) {
+        if (mExerciseList.isEmpty()) {
             updateAppBarTitle();
             displayQuestion(false);
         } else {
@@ -134,7 +134,7 @@ public class ExerciseActivity extends AppCompatActivity {
 
         // Display subject and number of questions in app bar
         String title = getResources().getString(R.string.question_number,
-                mSubject.getText(), mCurrentQuestionIndex + 1, mQuestionList.size());
+                mWorkout.getText(), mCurrentQuestionIndex + 1, mExerciseList.size());
         setTitle(title);
     }
 
@@ -144,14 +144,14 @@ public class ExerciseActivity extends AppCompatActivity {
                 if (result.getResultCode() == Activity.RESULT_OK) {
 
                     // Display the added question, which will appear at end of list
-                    mCurrentQuestionIndex = mQuestionList.size();
+                    mCurrentQuestionIndex = mExerciseList.size();
                     Toast.makeText(ExerciseActivity.this, R.string.question_added, Toast.LENGTH_SHORT).show();
                 }
             });
 
     private void addQuestion() {
         Intent intent = new Intent(this, ExerciseEditActivity.class);
-        intent.putExtra(ExerciseEditActivity.EXTRA_SUBJECT_ID, mSubject.getId());
+        intent.putExtra(ExerciseEditActivity.EXTRA_SUBJECT_ID, mWorkout.getId());
         mAddQuestionResultLauncher.launch(intent);
     }
 
@@ -166,7 +166,7 @@ public class ExerciseActivity extends AppCompatActivity {
     private void editQuestion() {
         if (mCurrentQuestionIndex >= 0) {
             Intent intent = new Intent(this, ExerciseEditActivity.class);
-            long questionId = mQuestionList.get(mCurrentQuestionIndex).getId();
+            long questionId = mExerciseList.get(mCurrentQuestionIndex).getId();
             intent.putExtra(ExerciseEditActivity.EXTRA_QUESTION_ID, questionId);
             mEditQuestionResultLauncher.launch(intent);
         }
@@ -174,8 +174,8 @@ public class ExerciseActivity extends AppCompatActivity {
 
     private void deleteQuestion() {
         if (mCurrentQuestionIndex >= 0) {
-            Question question = mQuestionList.get(mCurrentQuestionIndex);
-            mQuestionListViewModel.deleteQuestion(question);
+            Exercise exercise = mExerciseList.get(mCurrentQuestionIndex);
+            mQuestionListViewModel.deleteQuestion(exercise);
             Toast.makeText(this, R.string.question_deleted, Toast.LENGTH_SHORT).show();
 
             // Show delete message with Undo button
@@ -183,7 +183,7 @@ public class ExerciseActivity extends AppCompatActivity {
                     R.string.question_deleted, Snackbar.LENGTH_LONG);
             snackbar.setAction(R.string.undo, view -> {
                 // Add question back
-                mQuestionListViewModel.addQuestion(question);
+                mQuestionListViewModel.addQuestion(exercise);
             });
             snackbar.show();
         }
@@ -192,20 +192,20 @@ public class ExerciseActivity extends AppCompatActivity {
     private void showQuestion(int questionIndex) {
 
         // Show question at the given index
-        if (mQuestionList.size() > 0) {
+        if (mExerciseList.size() > 0) {
             if (questionIndex < 0) {
-                questionIndex = mQuestionList.size() - 1;
+                questionIndex = mExerciseList.size() - 1;
             }
-            else if (questionIndex >= mQuestionList.size()) {
+            else if (questionIndex >= mExerciseList.size()) {
                 questionIndex = 0;
             }
 
             mCurrentQuestionIndex = questionIndex;
             updateAppBarTitle();
 
-            Question question = mQuestionList.get(mCurrentQuestionIndex);
-            mQuestionTextView.setText(question.getText());
-            mAnswerTextView.setText(question.getAnswer());
+            Exercise exercise = mExerciseList.get(mCurrentQuestionIndex);
+            mQuestionTextView.setText(exercise.getText());
+            mAnswerTextView.setText(exercise.getAnswer());
         }
         else {
             // No questions yet

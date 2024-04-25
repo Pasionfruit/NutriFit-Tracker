@@ -3,24 +3,24 @@ package com.zybooks.nutrifittracker.repo;
 import androidx.lifecycle.LiveData;
 import androidx.room.*;
 
-import com.zybooks.nutrifittracker.model.Subject;
+import com.zybooks.nutrifittracker.model.Workout;
 
 import java.util.List;
 
 @Dao
 public interface WorkoutDao {
-    @Query("SELECT * FROM Subject WHERE id = :id")
-    LiveData<Subject> getSubject(long id);
+    @Query("SELECT * FROM Workout WHERE id = :id")
+    LiveData<Workout> getSubject(long id);
 
-    @Query("SELECT * FROM Subject ORDER BY text COLLATE NOCASE")
-    LiveData<List<Subject>> getSubjects();
+    @Query("SELECT * FROM Workout ORDER BY text COLLATE NOCASE")
+    LiveData<List<Workout>> getSubjects();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    long addSubject(Subject subject);
+    long addSubject(Workout workout);
 
     @Update
-    void updateSubject(Subject subject);
+    void updateSubject(Workout workout);
 
     @Delete
-    void deleteSubject(Subject subject);
+    void deleteSubject(Workout workout);
 }

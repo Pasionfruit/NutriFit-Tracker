@@ -5,8 +5,8 @@ import android.app.Application;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import com.zybooks.nutrifittracker.model.Workout;
 import com.zybooks.nutrifittracker.repo.RoutineRepository;
-import com.zybooks.nutrifittracker.model.Subject;
 
 import java.util.List;
 
@@ -19,15 +19,15 @@ public class WorkoutListViewModel extends AndroidViewModel {
         mStudyRepo = RoutineRepository.getInstance(application.getApplicationContext());
     }
 
-    public LiveData<List<Subject>> getSubjects() {
+    public LiveData<List<Workout>> getSubjects() {
         return mStudyRepo.getSubjects();
     }
 
-    public void addSubject(Subject subject) {
-        mStudyRepo.addSubject(subject);
+    public void addSubject(Workout workout) {
+        mStudyRepo.addSubject(workout);
     }
 
-    public void deleteSubject(Subject subject) {
-        mStudyRepo.deleteSubject(subject);
+    public void deleteSubject(Workout workout) {
+        mStudyRepo.deleteSubject(workout);
     }
 }

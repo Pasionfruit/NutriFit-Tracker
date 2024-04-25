@@ -7,9 +7,9 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
-@Entity(foreignKeys = @ForeignKey(entity = Subject.class, parentColumns = "id",
+@Entity(foreignKeys = @ForeignKey(entity = Workout.class, parentColumns = "id",
         childColumns = "subject_id", onDelete = CASCADE))
-public class Question {
+public class Exercise {
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")

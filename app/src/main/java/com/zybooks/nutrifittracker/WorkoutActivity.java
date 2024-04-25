@@ -21,7 +21,7 @@ import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.zybooks.nutrifittracker.model.Subject;
+import com.zybooks.nutrifittracker.model.Workout;
 import com.zybooks.nutrifittracker.viewmodel.WorkoutListViewModel;
 
 import java.util.Comparator;
@@ -39,7 +39,7 @@ public class WorkoutActivity extends AppCompatActivity
     private RecyclerView mRecyclerView;
     private int[] mSubjectColors;
     private WorkoutListViewModel mWorkoutListViewModel;
-    private Subject mSelectedSubject;
+    private Workout mSelectedWorkout;
     private int mSelectedSubjectPosition = RecyclerView.NO_POSITION;
     private ActionMode mActionMode = null;
 
@@ -106,12 +106,12 @@ public class WorkoutActivity extends AppCompatActivity
         }
     }
 
-    private void updateUI(List<Subject> subjectList) {
+    private void updateUI(List<Workout> workoutList) {
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav_view);
         int selectedItemId = bottomNavigationView.getSelectedItemId();
         boolean isWorkoutSelected = selectedItemId == R.id.navigation_workout;
 
-        mSubjectAdapter = new SubjectAdapter(subjectList, isWorkoutSelected);
+        mSubjectAdapter = new SubjectAdapter(workoutList, isWorkoutSelected);
         mSubjectAdapter.setSortOrder(getSettingsSortOrder());
         mRecyclerView.setAdapter(mSubjectAdapter);
     }
@@ -119,17 +119,17 @@ public class WorkoutActivity extends AppCompatActivity
     @Override
     public void onSubjectEntered(String subjectText) {
         if (subjectText.length() > 0) {
-            Subject subject = new Subject(subjectText);
+            Workout workout = new Workout(subjectText);
             mLoadSubjectList = false;
-            mWorkoutListViewModel.addSubject(subject);
-            mSubjectAdapter.addSubject(subject);
+            mWorkoutListViewModel.addSubject(workout);
+            mSubjectAdapter.addSubject(workout);
             Toast.makeText(this, "Added " + subjectText, Toast.LENGTH_SHORT).show();
         }
     }
 
     private class SubjectHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener, View.OnLongClickListener {
-        private Subject mSubject;
+        private Workout mWorkout;
         private final TextView mSubjectTextView;
 
         public SubjectHolder(LayoutInflater inflater, ViewGroup parent) {
@@ -139,9 +139,9 @@ public class WorkoutActivity extends AppCompatActivity
             itemView.setOnLongClickListener(this);
         }
 
-        public void bind(Subject subject, int position, boolean isWorkoutSelected) {
-            mSubject = subject;
-            mSubjectTextView.setText(subject.getText());
+        public void bind(Workout workout, int position, boolean isWorkoutSelected) {
+            mWorkout = workout;
+            mSubjectTextView.setText(workout.getText());
 
             if (isWorkoutSelected) {
                 if (mSelectedSubjectPosition == position) {
@@ -149,7 +149,7 @@ public class WorkoutActivity extends AppCompatActivity
                     mSubjectTextView.setBackgroundColor(Color.RED);
                 } else {
                     // Make the background color dependent on the length of the subject string
-                    int colorIndex = subject.getText().length() % mSubjectColors.length;
+                    int colorIndex = workout.getText().length() % mSubjectColors.length;
                     mSubjectTextView.setBackgroundColor(mSubjectColors[colorIndex]);
                 }
             } else {
@@ -162,8 +162,8 @@ public class WorkoutActivity extends AppCompatActivity
         public void onClick(View view) {
             // Start ExerciseActivity with the selected subject
             Intent intent = new Intent(WorkoutActivity.this, ExerciseActivity.class);
-            intent.putExtra(ExerciseActivity.EXTRA_SUBJECT_ID, mSubject.getId());
-            intent.putExtra(ExerciseActivity.EXTRA_SUBJECT_TEXT, mSubject.getText());
+            intent.putExtra(ExerciseActivity.EXTRA_SUBJECT_ID, mWorkout.getId());
+            intent.putExtra(ExerciseActivity.EXTRA_SUBJECT_TEXT, mWorkout.getText());
             startActivity(intent);
         }
 
@@ -172,7 +172,7 @@ public class WorkoutActivity extends AppCompatActivity
             if (mActionMode != null) {
                 return false;
             }
-            mSelectedSubject = mSubject;
+            mSelectedWorkout = mWorkout;
             mSubjectAdapter.notifyItemChanged(mSelectedSubjectPosition);
             mActionMode = WorkoutActivity.this.startActionMode(mActionModeCallback);
             return true;
@@ -197,8 +197,8 @@ public class WorkoutActivity extends AppCompatActivity
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
             if (item.getItemId() == R.id.delete) {
                 mLoadSubjectList = false;
-                mWorkoutListViewModel.deleteSubject(mSelectedSubject);
-                mSubjectAdapter.removeSubject(mSelectedSubject);
+                mWorkoutListViewModel.deleteSubject(mSelectedWorkout);
+                mSubjectAdapter.removeSubject(mSelectedWorkout);
                 mode.finish();
                 return true;
             }
@@ -214,11 +214,11 @@ public class WorkoutActivity extends AppCompatActivity
     };
 
     private class SubjectAdapter extends RecyclerView.Adapter<SubjectHolder> {
-        private final List<Subject> mSubjectList;
+        private final List<Workout> mWorkoutList;
         private final boolean mIsWorkoutSelected;
 
-        public SubjectAdapter(List<Subject> subjects, boolean isWorkoutSelected) {
-            mSubjectList = subjects;
+        public SubjectAdapter(List<Workout> workouts, boolean isWorkoutSelected) {
+            mWorkoutList = workouts;
             mIsWorkoutSelected = isWorkoutSelected;
         }
 
@@ -231,24 +231,24 @@ public class WorkoutActivity extends AppCompatActivity
 
         @Override
         public void onBindViewHolder(SubjectHolder holder, int position) {
-            holder.bind(mSubjectList.get(position), position, mIsWorkoutSelected);
+            holder.bind(mWorkoutList.get(position), position, mIsWorkoutSelected);
         }
 
         @Override
         public int getItemCount() {
-            return mSubjectList.size();
+            return mWorkoutList.size();
         }
 
-        public void addSubject(Subject subject) {
-            mSubjectList.add(0, subject);
+        public void addSubject(Workout workout) {
+            mWorkoutList.add(0, workout);
             notifyItemInserted(0);
             mRecyclerView.scrollToPosition(0);
         }
 
-        public void removeSubject(Subject subject) {
-            int index = mSubjectList.indexOf(subject);
+        public void removeSubject(Workout workout) {
+            int index = mWorkoutList.indexOf(workout);
             if (index >= 0) {
-                mSubjectList.remove(index);
+                mWorkoutList.remove(index);
                 notifyItemRemoved(index);
             }
         }
@@ -256,13 +256,13 @@ public class WorkoutActivity extends AppCompatActivity
         public void setSortOrder(SubjectSortOrder sortOrder) {
             switch (sortOrder) {
                 case ALPHABETIC:
-                    mSubjectList.sort(Comparator.comparing(Subject::getText));
+                    mWorkoutList.sort(Comparator.comparing(Workout::getText));
                     break;
                 case NEW_FIRST:
-                    mSubjectList.sort(Comparator.comparing(Subject::getUpdateTime).reversed());
+                    mWorkoutList.sort(Comparator.comparing(Workout::getUpdateTime).reversed());
                     break;
                 default:
-                    mSubjectList.sort(Comparator.comparing(Subject::getUpdateTime));
+                    mWorkoutList.sort(Comparator.comparing(Workout::getUpdateTime));
             }
         }
     }
