@@ -8,7 +8,7 @@ import com.zybooks.nutrifittracker.model.Question;
 import java.util.List;
 
 @Dao
-public interface QuestionDao {
+public interface ExerciseDao {
     @Query("SELECT * FROM Question WHERE id = :id")
     LiveData<Question> getQuestion(long id);
 

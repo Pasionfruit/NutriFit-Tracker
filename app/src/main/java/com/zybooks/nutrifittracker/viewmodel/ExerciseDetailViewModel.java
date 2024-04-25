@@ -8,12 +8,12 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 
-import com.zybooks.nutrifittracker.repo.StudyRepository;
+import com.zybooks.nutrifittracker.repo.RoutineRepository;
 import com.zybooks.nutrifittracker.model.Question;
 
 public class ExerciseDetailViewModel extends AndroidViewModel {
 
-    private StudyRepository mStudyRepo;
+    private RoutineRepository mStudyRepo;
     private final MutableLiveData<Long> questionIdLiveData = new MutableLiveData<>();
 
     public LiveData<Question> questionLiveData =
@@ -22,7 +22,7 @@ public class ExerciseDetailViewModel extends AndroidViewModel {
 
     public ExerciseDetailViewModel(@NonNull Application application) {
         super(application);
-        mStudyRepo = StudyRepository.getInstance(application.getApplicationContext());
+        mStudyRepo = RoutineRepository.getInstance(application.getApplicationContext());
     }
 
     public void loadQuestion(long questionId) {

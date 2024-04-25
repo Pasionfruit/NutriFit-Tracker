@@ -12,112 +12,112 @@ import com.zybooks.nutrifittracker.model.Subject;
 
 import java.util.List;
 
-public class StudyRepository {
+public class RoutineRepository {
 
     public MutableLiveData<String> importedSubject = new MutableLiveData<>();
     public MutableLiveData<List<Subject>> fetchedSubjectList = new MutableLiveData<>();
 
-    private final StudyFetcher mStudyFetcher;
-    private static StudyRepository mStudyRepo;
+    private final RoutineFetcher mRoutineFetcher;
+    private static RoutineRepository mStudyRepo;
     private static final String DATABASE_NAME = "study2.db";
-    private final SubjectDao mSubjectDao;
-    private final QuestionDao mQuestionDao;
+    private final WorkoutDao mWorkoutDao;
+    private final ExerciseDao mExerciseDao;
 
-    public static StudyRepository getInstance(Context context) {
+    public static RoutineRepository getInstance(Context context) {
         if (mStudyRepo == null) {
-            mStudyRepo = new StudyRepository(context);
+            mStudyRepo = new RoutineRepository(context);
         }
         return mStudyRepo;
     }
 
-    private StudyRepository(Context context) {
-        StudyDatabase database = Room.databaseBuilder(context, StudyDatabase.class, DATABASE_NAME)
+    private RoutineRepository(Context context) {
+        RoutineDatabase database = Room.databaseBuilder(context, RoutineDatabase.class, DATABASE_NAME)
                 .allowMainThreadQueries()
                 .fallbackToDestructiveMigration()
                 .build();
 
-        mSubjectDao = database.subjectDao();
-        mQuestionDao = database.questionDao();
-        mStudyFetcher = new StudyFetcher(context);
+        mWorkoutDao = database.subjectDao();
+        mExerciseDao = database.questionDao();
+        mRoutineFetcher = new RoutineFetcher(context);
     }
 
     private void addStarterData() {
         Subject subject = new Subject("Math");
-        long subjectId = mSubjectDao.addSubject(subject);
+        long subjectId = mWorkoutDao.addSubject(subject);
 
         Question question = new Question();
         question.setText("What is 2 + 3?");
         question.setAnswer("2 + 3 = 5");
         question.setSubjectId(subjectId);
-        mQuestionDao.addQuestion(question);
+        mExerciseDao.addQuestion(question);
 
         question = new Question();
         question.setText("What is pi?");
         question.setAnswer("The ratio of a circle's circumference to its diameter.");
         question.setSubjectId(subjectId);
-        mQuestionDao.addQuestion(question);
+        mExerciseDao.addQuestion(question);
 
         subject = new Subject("History");
-        subjectId = mSubjectDao.addSubject(subject);
+        subjectId = mWorkoutDao.addSubject(subject);
 
         question = new Question();
         question.setText("On what date was the U.S. Declaration of Independence adopted?");
         question.setAnswer("July 4, 1776");
         question.setSubjectId(subjectId);
-        mQuestionDao.addQuestion(question);
+        mExerciseDao.addQuestion(question);
 
         subject = new Subject("Computing");
-        mSubjectDao.addSubject(subject);
+        mWorkoutDao.addSubject(subject);
     }
 
     public void addSubject(Subject subject) {
-        long subjectId = mSubjectDao.addSubject(subject);
+        long subjectId = mWorkoutDao.addSubject(subject);
         subject.setId(subjectId);
     }
 
     public LiveData<Subject> getSubject(long subjectId) {
-        return mSubjectDao.getSubject(subjectId);
+        return mWorkoutDao.getSubject(subjectId);
     }
 
     public LiveData<List<Subject>> getSubjects() {
-        return mSubjectDao.getSubjects();
+        return mWorkoutDao.getSubjects();
     }
 
     public void deleteSubject(Subject subject) {
-        mSubjectDao.deleteSubject(subject);
+        mWorkoutDao.deleteSubject(subject);
     }
 
     public LiveData<Question> getQuestion(long questionId) {
-        return mQuestionDao.getQuestion(questionId);
+        return mExerciseDao.getQuestion(questionId);
     }
 
     public LiveData<List<Question>> getQuestions(long subjectId) {
-        return mQuestionDao.getQuestions(subjectId);
+        return mExerciseDao.getQuestions(subjectId);
     }
 
     public void addQuestion(Question question) {
-        long questionId = mQuestionDao.addQuestion(question);
+        long questionId = mExerciseDao.addQuestion(question);
         question.setId(questionId);
     }
 
     public void updateQuestion(Question question) {
-        mQuestionDao.updateQuestion(question);
+        mExerciseDao.updateQuestion(question);
     }
 
     public void deleteQuestion(Question question) {
-        mQuestionDao.deleteQuestion(question);
+        mExerciseDao.deleteQuestion(question);
     }
 
     public void fetchSubjects() {
-        mStudyFetcher.fetchSubjects(mFetchListener);
+        mRoutineFetcher.fetchSubjects(mFetchListener);
     }
 
     public void fetchQuestions(Subject subject) {
-        mStudyFetcher.fetchQuestions(subject, mFetchListener);
+        mRoutineFetcher.fetchQuestions(subject, mFetchListener);
     }
 
-    private final StudyFetcher.OnStudyDataReceivedListener mFetchListener =
-            new StudyFetcher.OnStudyDataReceivedListener() {
+    private final RoutineFetcher.OnStudyDataReceivedListener mFetchListener =
+            new RoutineFetcher.OnStudyDataReceivedListener() {
 
                 @Override
                 public void onSubjectsReceived(List<Subject> subjectList) {

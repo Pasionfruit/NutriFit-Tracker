@@ -19,7 +19,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StudyFetcher {
+public class RoutineFetcher {
 
     public interface OnStudyDataReceivedListener {
         void onSubjectsReceived(List<Subject> subjectList);
@@ -32,7 +32,7 @@ public class StudyFetcher {
 
     private final RequestQueue mRequestQueue;
 
-    public StudyFetcher(Context context) {
+    public RoutineFetcher(Context context) {
         mRequestQueue = Volley.newRequestQueue(context);
     }
 
