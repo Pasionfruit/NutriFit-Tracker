@@ -47,6 +47,9 @@ public class Exercise {
     }
 
     public void setText(String text) {
+        if (text == null || text.trim().isEmpty()) {
+            throw new IllegalArgumentException("Text cannot be null or empty.");
+        }
         mText = text;
     }
 
@@ -55,6 +58,9 @@ public class Exercise {
     }
 
     public void setAnswer(String answer) {
+        if (answer == null || answer.trim().isEmpty()) {
+            throw new IllegalArgumentException("Answer cannot be null or empty.");
+        }
         mAnswer = answer;
     }
 
