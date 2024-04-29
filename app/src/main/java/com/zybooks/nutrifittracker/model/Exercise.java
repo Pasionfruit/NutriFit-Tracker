@@ -63,8 +63,16 @@ public class Exercise {
     }
 
     public void setWeight(String weight) {
-        mWeight = weight;
+    try {
+        float weightValue = Float.parseFloat(weight);
+        if (weightValue < 0) {
+            throw new IllegalArgumentException("Weight cannot be negative.");
+        }
+        this.mWeight = weight;
+    } catch (NumberFormatException e) {
+        throw new IllegalArgumentException("Invalid weight format.");
     }
+}
 
     public long getSubjectId() {
         return mSubjectId;
